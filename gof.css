@@ -1,0 +1,53 @@
+body {
+  background: #1b1b1b42;
+  color: #1b1b1b;
+  font-family: Helvetica, sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  inset: 0;
+}
+
+.body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.stats {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  left: 1em;
+  top: 1em;
+}
+
+.label-input {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.small-space {
+  height: 1em;
+  width: 1em;
+}
+
+.big-space {
+  height: 2.2em;
+  width: 2.2em;
+}
+
+#automaton {
+  background: white;
+  display: grid;
+  height: 96vh;
+  width: 96vh;
+  border-radius: 4px;
+  overflow: hidden;
+}

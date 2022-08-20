@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Game of life</title>
+    <script src="./gof.js" defer></script>
+    <link rel="stylesheet" href="./gof.css">
+  </head>
+  <body>
+    <div class="stats">
+      <div class="label-input">
+        <span>Cells:</span>
+        <input type="number" min="2" max="145" id="size">
+      </div>
+      <div class="label-input">
+        <span>Grid:</span>
+        <input type="checkbox" id="grid" value="1" checked>
+      </div>
+      <div class="label-input">
+        <span>Circles:</span>
+        <input type="checkbox" id="circles" value="2">
+      </div>
+
+      <div class="small-space"></div>
+
+      <button id="generator">Generate</button>
+      <button id="starter" disabled>Start</button>
+
+      <div class="big-space"></div>
+
+      <div class="label-input">
+        <span>Cycle:</span>
+        <span id="cycles">--</span>
+      </div>
+    </div>
+
+    <div class="body">
+      <div id="automaton"></div>
+    </div>
+  </body>
+</html>
