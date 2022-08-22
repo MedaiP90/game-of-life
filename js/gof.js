@@ -1,10 +1,8 @@
-const aliveColor = "#1b1b1b";
-
 function generateCell() {
   const cell = document.createElement("div");
 
   cell.style.background = "#ffffff";
-  cell.setAttribute("alive", "0");
+  cell.setAttribute("state", "0");
 
   if (gridChk.checked) cell.style["box-shadow"] = "0px 0px 0px 1px #1b1b1b42";
   if (circlesChk.checked) cell.style["border-radius"] = "50%";
@@ -51,7 +49,7 @@ function reset() {
   for (let y = 0; y < automaton.length; y++) {
     for (let x = 0; x < automaton[y].length; x++) {
       automaton[y][x].style.background = "#ffffff";
-      automaton[y][x].setAttribute("alive", "0");
+      automaton[y][x].setAttribute("state", "0");
     }
   }
 
@@ -76,8 +74,8 @@ function setup() {
     const rndX = getRandomInt(0, cellsPerRow - 1);
     const rndY = getRandomInt(0, cellsPerRow - 1);
 
-    automaton[rndY][rndX].style.background = aliveColor;
-    automaton[rndY][rndX].setAttribute("alive", "1");
+    automaton[rndY][rndX].style.background = cellColor;
+    automaton[rndY][rndX].setAttribute("state", "1");
   }
 
   document.getElementById("starter").disabled = false;
@@ -86,14 +84,14 @@ function setup() {
 
 function cellBehavior(cell = { x: 0, y: 0, alive: false }, neighbors = []) {
   let aliveNeighbors = neighbors.reduce((acc, curr) => {
-    return acc + (curr.getAttribute("alive") == "1" ? 1 : 0)
+    return acc + (curr.getAttribute("state") == "1" ? 1 : 0)
   }, 0);
 
   const remainsAlive =
     (cell.alive && aliveNeighbors >= 2 && aliveNeighbors <= 3) ||
     (!cell.alive && aliveNeighbors == 3);
 
-  return remainsAlive ? aliveColor : "#ffffff";
+  return remainsAlive ? cellColor : "#ffffff";
 }
 
 function game() {
@@ -108,24 +106,32 @@ function game() {
       tmpColors[y] = [];
 
       for (let x = 0; x < cellsPerRow; x++) {
-        const yB = y - 1 < 0 ? cellsPerRow - 1 : y - 1;
-        const xB = x - 1 < 0 ? cellsPerRow - 1 : x - 1;
-        const yA = y + 1 == cellsPerRow ? 0 : y + 1;
-        const xA = x + 1 == cellsPerRow ? 0 : x + 1;
+        const yB = y - 1 < 0
+          ? bordersChk.checked ? cellsPerRow - 1 : undefined
+          : y - 1;
+        const xB = x - 1 < 0
+          ? bordersChk.checked ? cellsPerRow - 1 : undefined
+          : x - 1;
+        const yA = y + 1 == cellsPerRow
+          ? bordersChk.checked ? 0 : undefined
+          : y + 1;
+        const xA = x + 1 == cellsPerRow
+          ? bordersChk.checked ? 0 : undefined
+          : x + 1;
 
         const neighbors = [
-          automaton[yB][xB],
-          automaton[yB][x],
-          automaton[yB][xA],
-          automaton[y][xB],
-          automaton[y][xA],
-          automaton[yA][xB],
-          automaton[yA][x],
-          automaton[yA][xA],
-        ];
+          yB != undefined && xB != undefined ? automaton[yB][xB] : undefined,
+          yB != undefined ? automaton[yB][x] : undefined,
+          yB != undefined && xA != undefined ? automaton[yB][xA] : undefined,
+          xB != undefined ? automaton[y][xB] : undefined,
+          xA != undefined ? automaton[y][xA] : undefined,
+          yA != undefined && xB != undefined ? automaton[yA][xB] : undefined,
+          yA != undefined ? automaton[yA][x] : undefined,
+          yA != undefined && xA != undefined ? automaton[yA][xA] : undefined,
+        ].filter((n) => n != undefined);
 
         tmpColors[y][x] = cellBehavior(
-          { x, y, alive: automaton[y][x].getAttribute("alive") == "1" },
+          { x, y, alive: automaton[y][x].getAttribute("state") == "1" },
           neighbors
         );
       }
@@ -134,7 +140,7 @@ function game() {
     for (let y = 0; y < automaton.length; y++) {
       for (let x = 0; x < automaton[y].length; x++) {
         automaton[y][x].style.background = tmpColors[y][x];
-        automaton[y][x].setAttribute("alive", tmpColors[y][x] == aliveColor ? "1" : "0");
+        automaton[y][x].setAttribute("state", tmpColors[y][x] == cellColor ? "1" : "0");
       }
     }
   }, 500);
@@ -144,8 +150,10 @@ const grid = document.getElementById("automaton");
 const size = document.getElementById("size");
 const gridChk = document.getElementById("grid");
 const circlesChk = document.getElementById("circles");
+const bordersChk = document.getElementById("borders");
 
 let cellsPerRow = 10;
+let cellColor = "#1b1b1b";
 let automaton = [];
 
 size.value = cellsPerRow;
@@ -170,3 +178,8 @@ document.getElementById("starter").addEventListener("click", () => {
 });
 
 document.getElementById("generator").addEventListener("click", setup);
+
+document.getElementById("color").addEventListener("change", () => {
+  cellColor = document.getElementById("color").value
+  document.getElementById("color-preview").style.background = cellColor;
+});

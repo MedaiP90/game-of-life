@@ -2,39 +2,70 @@
 <html>
   <head>
     <title>Game of life</title>
-    <script src="./gof.js" defer></script>
-    <link rel="stylesheet" href="./gof.css">
+    <script src="./js/gof.js" defer></script>
+    <link rel="stylesheet" href="./css/gof.css">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
   </head>
   <body>
-    <div class="stats">
-      <div class="label-input">
-        <span>Cells:</span>
+    <div class="panel settings">
+      <h1>Settings</h1>
+
+      <div class="label-input" title="Select the size of the grid: N x N">
+        <span>Size:</span>
         <input type="number" min="2" max="145" id="size">
-      </div>
-      <div class="label-input">
-        <span>Grid:</span>
-        <input type="checkbox" id="grid" value="1" checked>
-      </div>
-      <div class="label-input">
-        <span>Circles:</span>
-        <input type="checkbox" id="circles" value="2">
       </div>
 
       <div class="small-space"></div>
 
-      <button id="generator">Generate</button>
-      <button id="starter" disabled>Start</button>
+      <div class="label-input" title="Display the grid or not">
+        <span>Display grid:</span>
+        <input type="checkbox" id="grid" value="1" checked>
+      </div>
+      <div class="label-input" title="Use circular cells or not">
+        <span>Shaped cells:</span>
+        <input type="checkbox" id="circles" value="2">
+      </div>
+      <div class="label-input" title="Cells at the other side of the grid can be considered as neighbors">
+        <span>Cross borders:</span>
+        <input type="checkbox" id="borders" value="3" checked>
+      </div>
+
+      <div class="small-space"></div>
+
+      <div class="label-input" title="Change the color of the cells">
+        <span>Color:</span>
+        <div>
+          <input type="text" id="color" value="#1b1b1b">
+          <button>Select</button>
+        </div>
+      </div>
+
+      <div id="color-preview"></div>
+
+      <!-- <textarea cols="21" rows="13" id="rules"></textarea> -->
 
       <div class="big-space"></div>
 
+      <button id="generator" title="Generate a new random configuration">Generate</button>
+      <button id="starter" title="Start or pause the simulation" disabled>Start</button>
+    </div>
+
+    <div class="panel stats">
+      <h1>Stats</h1>
+
       <div class="label-input">
-        <span>Cycle:</span>
+        <span>Cycles:</span>
         <span id="cycles">--</span>
       </div>
     </div>
 
     <div class="body">
       <div id="automaton"></div>
+    </div>
+
+    <div class="gh">
+      Open on
+      <a href="https://github.com/MedaiP90/game-of-life" target="_blank">GitHub</a>
     </div>
   </body>
 </html>
