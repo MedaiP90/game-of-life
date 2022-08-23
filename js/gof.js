@@ -10,6 +10,14 @@ function cellGenerator(gridVisible, circularCells) {
   return cell;
 }
 
+function stopProgress() {
+  clearInterval(gameProgress);
+  gameProgress = undefined;
+
+  startBtn.innerHTML = "Start";
+  generateBtn.disabled = false;
+}
+
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -19,7 +27,10 @@ function getRandomInt(min, max) {
 const grid = document.getElementById("automaton");
 const size = document.getElementById("size");
 const speed = document.getElementById("speed");
+const rules = document.getElementById("rules");
+const errorLog = document.getElementById("error-log");
 const cyclesStat = document.getElementById("cycles");
+const statusStat = document.getElementById("status");
 const gridChk = document.getElementById("grid");
 const circlesChk = document.getElementById("circles");
 const bordersChk = document.getElementById("borders");
@@ -29,7 +40,7 @@ const startBtn = document.getElementById("starter");
 
 // Create a new game
 const automaton = new Automaton(
-  updateStats = (cycle) => (cyclesStat.innerHTML = cycle),
+  updateStats = (cycle) => (cyclesStat.innerHTML = cycle)
 );
 
 // Create game renderer
@@ -39,15 +50,14 @@ const renderer = new Renderer(automaton, grid, 96);
 
 startBtn.addEventListener("click", () => {
   if (gameProgress != undefined) {
-    clearInterval(gameProgress);
-    gameProgress = undefined;
+    stopProgress();
 
-    startBtn.innerHTML = "Start";
-    generateBtn.disabled = false;
+    statusStat.innerHTML = "Stopped";
   } else {
     gameProgress = setInterval(() => automaton.simulate(), Number(speed.value));
 
     startBtn.innerHTML = "Pause";
+    statusStat.innerHTML = "Running";
     generateBtn.disabled = true;
   }
 });
@@ -56,9 +66,22 @@ generateBtn.addEventListener("click", () => {
   startBtn.disabled = true;
   generateBtn.disabled = true;
 
+  errorLog.style.display = "none";
+  errorLog.innerHTML = "";
+  cyclesStat.innerHTML = "--";
+  statusStat.innerHTML = "--";
+
   automaton.generateGrid(
     cellsPerRow = Number(size.value),
-    cellBuilder = () => cellGenerator(gridChk.checked, circlesChk.checked)
+    cellBehavior = rules.value,
+    cellBuilder = () => cellGenerator(gridChk.checked, circlesChk.checked),
+    onCellError = (error) => {
+      errorLog.innerHTML = error.message;
+      errorLog.style.display = "inline";
+      statusStat.innerHTML = "Error";
+
+      stopProgress();
+    }
   );
 
   // Generate initial active cells
@@ -89,6 +112,10 @@ let gameRenderer = undefined;
 
 size.value = 10;
 speed.value = 500;
+rules.value =
+  "let aliveNeighbors = neighbors.reduce((acc, curr) => acc + curr.state, 0);\n" +
+  "const remainsAlive = (currentState == 1 && aliveNeighbors >= 2 && aliveNeighbors <= 3) || (currentState == 0 && aliveNeighbors == 3);\n" +
+  "return remainsAlive ? 1 : 0;";
 
 renderer.changeColor("#1b1b1b");
 renderer.start();

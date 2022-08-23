@@ -3,22 +3,22 @@ class Cell {
   tmpState = 0;
   htmlElement = undefined;
 
-  constructor(htmlBuilder) {
-    this.htmlElement = htmlBuilder();
-  }
+  #cellBehavior = "";
+  #onError = () => {};
 
-  get alive() {
-    return this.state == 1;
+  constructor(cellBehavior, htmlBuilder, onError) {
+    this.htmlElement = htmlBuilder();
+    this.#cellBehavior = cellBehavior;
+    this.#onError = onError;
   }
 
   behave(neighbors = []) {
-    let aliveNeighbors = neighbors.reduce((acc, curr) => acc + curr.state, 0);
-  
-    const remainsAlive =
-      (this.alive && aliveNeighbors >= 2 && aliveNeighbors <= 3) ||
-      (!this.alive && aliveNeighbors == 3);
-  
-    this.tmpState = remainsAlive ? 1 : 0;
+    try {
+      const behavior = new Function("currentState", "neighbors", this.#cellBehavior);
+      this.tmpState = behavior(this.state, neighbors);
+    } catch (error) {
+      this.#onError(error);
+    }
   }
 
   flush() {

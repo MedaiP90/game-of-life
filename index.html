@@ -49,10 +49,21 @@
           <button>Select</button>
         </div>
       </div>
-
       <div id="color-preview"></div>
 
-      <!-- <textarea cols="21" rows="13" id="rules"></textarea> -->
+      <div class="small-space"></div>
+
+      <div class="v-label-input" id="rule-input">
+        <span>Cell behavior:</span>
+        <textarea cols="21" rows="13" spellcheck="false" id="rules"></textarea>
+        <span class="caption">
+          There are two available variables: <code>currentState</code> is the state of the cell (between 0 and 1)
+          and <code>neighbors</code> is the array of <em>Moore neighbors</em>.
+          The rule <strong>must</strong> return the new state (between 0 and 1).
+
+          <strong>NB: press <em>Generate</em> to apply the changes.</strong>
+        </span>
+      </div>
 
       <div class="big-space"></div>
 
@@ -65,16 +76,21 @@
 
       <div class="label-input">
         <span>Cycles:</span>
-        <span id="cycles">--</span>
+        <span id="cycles" class="bold">--</span>
+      </div>
+      <div class="label-input">
+        <span>Status:</span>
+        <span id="status" class="bold">--</span>
       </div>
     </div>
 
     <div class="body">
       <div id="automaton"></div>
+      <div id="error-log"></div>
     </div>
 
     <div class="version">
-      v 1.1.0
+      v 1.2.0
     </div>
 
     <div class="gh">

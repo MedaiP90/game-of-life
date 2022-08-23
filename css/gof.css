@@ -28,15 +28,20 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: 0.6em;
+  min-width: 33ch;
+  max-width: 33ch;
 }
 
 .settings {
   left: 1em;
+  max-height: 96vh;
+  overflow: auto;
 }
 
 .stats {
   right: 1em;
-  min-width: 21ch;
+  max-height: 96vh;
+  overflow: auto;
 }
 
 .label-input {
@@ -44,6 +49,16 @@ textarea {
   flex-direction: row;
   justify-content: space-between;
   gap: 1em;
+}
+
+.v-label-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+
+.caption {
+  font-size: 0.7em;
 }
 
 .small-space {
@@ -70,7 +85,7 @@ textarea {
   font-size: 0.8em;
 }
 
-#cycles {
+.bold {
   font-weight: bold;
 }
 
@@ -95,4 +110,22 @@ textarea {
   height: 1em;
   border-radius: 4px;
   border: 1px solid #1b1b1b;
+}
+
+#rules {
+  white-space: nowrap;
+  font-family: monospace;
+}
+
+#error-log {
+  position: absolute;
+  display: none;
+  margin: auto;
+  color: #e32f22;
+  background-color: white;
+  padding: 0.8em;
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 1px #e32f2242,
+    0 0 10px 1px #e32f2242;
 }
