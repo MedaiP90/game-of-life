@@ -52,9 +52,9 @@ The concept can be extended to higher dimensions, for example forming a 6-cell o
 
 ## Sources
 
-- Moore neighborhood: [https://en.wikipedia.org/wiki/Moore_neighborhood](https://en.wikipedia.org/wiki/Moore_neighborhood)
+- Moore neighborhood: [Moore neighborhood - Wikipedia](https://en.wikipedia.org/wiki/Moore_neighborhood)
 
-- Von Newmann neighborhood: [https://en.wikipedia.org/wiki/Von_Neumann_neighborhood](https://en.wikipedia.org/wiki/Von_Neumann_neighborhood)
+- Von Newmann neighborhood: [Von Neumann neighborhood - Wikipedia](https://en.wikipedia.org/wiki/Von_Neumann_neighborhood)
 
 - Brian's Brain: [Brian's Brain - Wikipedia](https://en.wikipedia.org/wiki/Brian's_Brain)
 
