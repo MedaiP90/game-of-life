@@ -63,6 +63,13 @@ textarea {
   font-size: 0.8em;
 }
 
+.version {
+  position: absolute;
+  bottom: 0.5em;
+  left: 0.5em;
+  font-size: 0.8em;
+}
+
 #cycles {
   font-weight: bold;
 }
