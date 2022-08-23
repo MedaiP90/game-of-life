@@ -2,6 +2,7 @@ class Automaton {
   #cycle = 0;
   #grid = [];
   #size = 0;
+  #neighborsType = "m";
 
   #updateStats = () => {};
 
@@ -24,12 +25,14 @@ class Automaton {
 
   generateGrid(
     cellsPerRow = 0,
+    neighborsType = "m",
     cellBehavior = "",
     cellBuilder = () => document.createElement("div"),
     onCellError = (e) => console.error(e)
   ) {
     this.reset();
     this.#size = cellsPerRow;
+    this.#neighborsType = neighborsType;
 
     for (let y = 0; y < cellsPerRow; y++) {
       this.#grid[y] = [];
@@ -69,15 +72,20 @@ class Automaton {
           ? bordersChk.checked ? 0 : undefined
           : x + 1;
 
+        const moore = this.#neighborsType == "m"
+          ? [
+              yB != undefined && xB != undefined ? this.#grid[yB][xB] : undefined,
+              yB != undefined && xA != undefined ? this.#grid[yB][xA] : undefined,
+              yA != undefined && xB != undefined ? this.#grid[yA][xB] : undefined,
+              yA != undefined && xA != undefined ? this.#grid[yA][xA] : undefined,
+            ]
+          : [];
         const neighbors = [
-          yB != undefined && xB != undefined ? this.#grid[yB][xB] : undefined,
           yB != undefined ? this.#grid[yB][x] : undefined,
-          yB != undefined && xA != undefined ? this.#grid[yB][xA] : undefined,
           xB != undefined ? this.#grid[y][xB] : undefined,
           xA != undefined ? this.#grid[y][xA] : undefined,
-          yA != undefined && xB != undefined ? this.#grid[yA][xB] : undefined,
           yA != undefined ? this.#grid[yA][x] : undefined,
-          yA != undefined && xA != undefined ? this.#grid[yA][xA] : undefined,
+          ...moore
         ].filter((n) => n != undefined);
 
         this.#grid[y][x].behave(neighbors);

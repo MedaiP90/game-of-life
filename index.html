@@ -39,6 +39,13 @@
         <span>Cross borders:</span>
         <input type="checkbox" id="borders" value="3" checked>
       </div>
+      <div class="label-input" title="Select neighbors type (Von Neumann or Moore)">
+        <span>Neighbors type:</span>
+        <select id="neighbors-type">
+          <option value="m" selected>Moore</option>
+          <option value="n">Von Neumann</option>
+        </select>
+      </div>
 
       <div class="small-space"></div>
 
@@ -58,7 +65,7 @@
         <textarea cols="21" rows="13" spellcheck="false" id="rules"></textarea>
         <span class="caption">
           There are two available variables: <code>currentState</code> is the state of the cell (between 0 and 1)
-          and <code>neighbors</code> is the array of <em>Moore neighbors</em>.
+          and <code>neighbors</code> is the array of the cell's neighbors (<em>Moore or Von Neumann</em>).
           The rule <strong>must</strong> return the new state (between 0 and 1).
 
           <strong>NB: press <em>Generate</em> to apply the changes.</strong>
@@ -90,7 +97,7 @@
     </div>
 
     <div class="version">
-      v 1.2.1
+      <a href="https://github.com/MedaiP90/game-of-life/tree/v1.3.0" target="_blank">v1.3.0</a>
     </div>
 
     <div class="gh">

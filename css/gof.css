@@ -29,7 +29,7 @@ textarea {
   flex-direction: column;
   gap: 0.6em;
   min-width: 33ch;
-  max-width: 33ch;
+  max-width: 35ch;
 }
 
 .settings {
@@ -48,6 +48,7 @@ textarea {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   gap: 1em;
 }
 

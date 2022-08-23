@@ -34,6 +34,7 @@ const statusStat = document.getElementById("status");
 const gridChk = document.getElementById("grid");
 const circlesChk = document.getElementById("circles");
 const bordersChk = document.getElementById("borders");
+const neighborsSel = document.getElementById("neighbors-type");
 const colorInput = document.getElementById("color");
 const generateBtn = document.getElementById("generator");
 const startBtn = document.getElementById("starter");
@@ -73,6 +74,7 @@ generateBtn.addEventListener("click", () => {
 
   automaton.generateGrid(
     cellsPerRow = Number(size.value),
+    neighborsType = neighborsSel.value,
     cellBehavior = rules.value,
     cellBuilder = () => cellGenerator(gridChk.checked, circlesChk.checked),
     onCellError = (error) => {
