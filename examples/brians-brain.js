@@ -11,4 +11,3 @@ if (currentState == 0) {
 }
 
 return currentState == 0.5 ? 0 : 0.5;
-

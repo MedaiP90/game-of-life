@@ -130,3 +130,7 @@ textarea {
     0 0 0 1px #e32f2242,
     0 0 10px 1px #e32f2242;
 }
+
+#rules-preset {
+  display: none;
+}

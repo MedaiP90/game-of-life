@@ -28,6 +28,7 @@ const grid = document.getElementById("automaton");
 const size = document.getElementById("size");
 const speed = document.getElementById("speed");
 const rules = document.getElementById("rules");
+const presets = document.getElementById("rules-preset");
 const errorLog = document.getElementById("error-log");
 const cyclesStat = document.getElementById("cycles");
 const statusStat = document.getElementById("status");
@@ -38,6 +39,43 @@ const neighborsSel = document.getElementById("neighbors-type");
 const colorInput = document.getElementById("color");
 const generateBtn = document.getElementById("generator");
 const startBtn = document.getElementById("starter");
+
+// Presets selection
+fetch("examples/index.json")
+  .then(async (res) => {
+    const availablePresets = await res.json();
+
+    availablePresets.unshift({ name: "--", file: "--" });
+
+    availablePresets.forEach((preset) => {
+      const htmlPreset = document.createElement("option");
+
+      htmlPreset.innerHTML = preset.name;
+      htmlPreset.value = preset.file;
+      htmlPreset.setAttribute("neighborhood", preset.neighborhood || "");
+
+      presets.appendChild(htmlPreset);
+    });
+
+    presets.addEventListener("change", async () => {
+      const selected = presets.value;
+      const path = `examples/${selected}`;
+      const nt = presets.options[presets.selectedIndex].getAttribute("neighborhood");
+
+      if (nt != "") neighborsSel.value = nt;
+      if (selected == "--") return rules.value = "";
+
+      try {
+        const response = await fetch(path);
+        rules.value = await response.text();
+      } catch {
+        /* Unhandled */
+      }
+    });
+
+    presets.style.display = "inline";
+  })
+  .catch(() => (presets.style.display = "none"));
 
 // Create a new game
 const automaton = new Automaton(
@@ -114,10 +152,6 @@ let gameRenderer = undefined;
 
 size.value = 10;
 speed.value = 500;
-rules.value =
-  "let aliveNeighbors = neighbors.reduce((acc, curr) => acc + curr.state, 0);\n" +
-  "const remainsAlive = (currentState == 1 && aliveNeighbors >= 2 && aliveNeighbors <= 3) || (currentState == 0 && aliveNeighbors == 3);\n" +
-  "return remainsAlive ? 1 : 0;";
 
 renderer.changeColor("#1b1b1b");
 renderer.start();
