@@ -33,7 +33,6 @@ class Automaton {
     cellsPerRow = 0,
     neighborsType = "m",
     cellBehavior = "",
-    cellBuilder = () => document.createElement("div"),
     onCellError = (e) => console.error(e)
   ) {
     this.reset();
@@ -45,7 +44,7 @@ class Automaton {
       this.#grid[y] = [];
     
       for (let x = 0; x < cellsPerRow; x++) {
-        this.#grid[y][x] = new Cell(cellBehavior, cellBuilder, onCellError);
+        this.#grid[y][x] = new Cell(cellBehavior, onCellError);
       }
     }
   }

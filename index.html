@@ -33,10 +33,6 @@
         <span>Display grid:</span>
         <input type="checkbox" id="grid" value="1" checked>
       </div>
-      <div class="label-input" title="Use circular cells or not">
-        <span>Shaped cells:</span>
-        <input type="checkbox" id="circles" value="2">
-      </div>
       <div class="label-input" title="Cells at the other side of the grid can be considered as neighbors">
         <span>Cross borders:</span>
         <input type="checkbox" id="borders" value="3" checked>
@@ -108,7 +104,7 @@
     </div>
 
     <div class="body" id="body">
-      <div id="automaton"></div>
+      <canvas id="automaton"></canvas>
       <div id="error-log"></div>
     </div>
 

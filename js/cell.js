@@ -1,13 +1,11 @@
 class Cell {
   state = 0;
   tmpState = 0;
-  htmlElement = undefined;
 
   #cellBehavior = "";
   #onError = () => {};
 
-  constructor(cellBehavior, htmlBuilder, onError) {
-    this.htmlElement = htmlBuilder();
+  constructor(cellBehavior, onError) {
     this.#cellBehavior = cellBehavior;
     this.#onError = onError;
   }
