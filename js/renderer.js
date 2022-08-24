@@ -42,8 +42,9 @@ class Renderer {
         forceCellsDraw = false;
 
         this.#drawCells();
-        this.#redrawCallback();
       }
+
+      if (!this.#gameProgress) this.#redrawCallback();
 
       this.start();
     }, 33);
