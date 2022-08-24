@@ -9,8 +9,6 @@ class Renderer {
   #gameProgress = false;
   #redrawCallback = () => {};
 
-  _rendererInterval = undefined;
-
   constructor(automaton, htmlAutomaton, size, redrawCallback = () => {}) {
     this.#automaton = automaton;
     this.#htmlAutomaton = htmlAutomaton;
@@ -23,7 +21,7 @@ class Renderer {
   }
 
   start() {
-    this._rendererInterval = setInterval(() => {
+    setTimeout(() => {
       let forceCellsDraw = false;
 
       /* The grid has to be updated */
@@ -43,7 +41,9 @@ class Renderer {
         forceCellsDraw = false;
         this.#drawCells();
       }
-    }, 33); // 30 fps
+
+      this.start();
+    }, 33);
   }
 
   redrawGrid() {
