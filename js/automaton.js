@@ -33,7 +33,6 @@ class Automaton {
     cellsPerRow = 0,
     neighborsType = "m",
     cellBehavior = "",
-    cellBuilder = () => document.createElement("div"),
     onCellError = (e) => console.error(e)
   ) {
     this.reset();
@@ -45,37 +44,24 @@ class Automaton {
       this.#grid[y] = [];
     
       for (let x = 0; x < cellsPerRow; x++) {
-        this.#grid[y][x] = new Cell(cellBehavior, cellBuilder, onCellError);
+        this.#grid[y][x] = new Cell(cellBehavior, onCellError);
       }
     }
   }
 
   initializeGrid(totalCells, randomFunction, stateFunction = () => 1) {
-    for (let i = 0; i < totalCells; i++) {
-      const rndX = randomFunction();
-      const rndY = randomFunction();
-
-      this.#grid[rndY][rndX].state = stateFunction();
-    }
-  }
-
-  simulate() {
-    this.#updateStats(++this.#cycle);
-
-    const cellsPerRow = this.#grid.length;
-
-    for (let y = 0; y < cellsPerRow; y++) {
-      for (let x = 0; x < cellsPerRow; x++) {
+    this.#grid.forEach((row, y) => {
+      row.forEach((cell, x) => {
         const yB = y - 1 < 0
-          ? this.#crossBorders ? cellsPerRow - 1 : undefined
+          ? this.#crossBorders ? this.#size - 1 : undefined
           : y - 1;
         const xB = x - 1 < 0
-          ? this.#crossBorders ? cellsPerRow - 1 : undefined
+          ? this.#crossBorders ? this.#size - 1 : undefined
           : x - 1;
-        const yA = y + 1 == cellsPerRow
+        const yA = y + 1 == this.#size
           ? this.#crossBorders ? 0 : undefined
           : y + 1;
-        const xA = x + 1 == cellsPerRow
+        const xA = x + 1 == this.#size
           ? this.#crossBorders ? 0 : undefined
           : x + 1;
 
@@ -95,12 +81,29 @@ class Automaton {
           ...moore
         ].filter((n) => n != undefined);
 
-        this.#grid[y][x].behave(neighbors);
-      }
+        cell.neighborhood = neighbors;
+      });
+    });
+
+    for (let i = 0; i < totalCells; i++) {
+      const rndX = randomFunction();
+      const rndY = randomFunction();
+
+      this.#grid[rndY][rndX].state = stateFunction();
     }
+  }
+
+  simulate() {
+    this.#grid.forEach((row) => {
+      row.forEach((cell) => {
+        if (cell.hasNeighbors) cell.behave();
+      });
+    });
 
     this.#grid.forEach((row) => {
       row.forEach((cell) => cell.flush());
     });
+
+    this.#updateStats(++this.#cycle);
   }
 }

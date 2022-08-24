@@ -110,7 +110,6 @@ textarea {
 
 #automaton {
   background: white;
-  display: grid;
   height: 96vh;
   width: 96vh;
   border-radius: 4px;

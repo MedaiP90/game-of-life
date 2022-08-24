@@ -20,7 +20,7 @@
 
       <div class="label-input" title="Select the size of the grid: N x N">
         <span>Size:</span>
-        <input type="number" min="2" max="400" id="size">
+        <input type="number" min="2" max="1080" id="size">
       </div>
       <div class="label-input" title="Select cycle speed in milliseconds">
         <span>Speed (ms):</span>
@@ -32,10 +32,6 @@
       <div class="label-input" title="Display the grid or not">
         <span>Display grid:</span>
         <input type="checkbox" id="grid" value="1" checked>
-      </div>
-      <div class="label-input" title="Use circular cells or not">
-        <span>Shaped cells:</span>
-        <input type="checkbox" id="circles" value="2">
       </div>
       <div class="label-input" title="Cells at the other side of the grid can be considered as neighbors">
         <span>Cross borders:</span>
@@ -97,6 +93,10 @@
         <span id="cycles" class="bold">--</span>
       </div>
       <div class="label-input">
+        <span>FPS:</span>
+        <span id="fps" class="bold">--</span>
+      </div>
+      <div class="label-input">
         <span>Status:</span>
         <span id="status" class="bold">--</span>
       </div>
@@ -108,7 +108,7 @@
     </div>
 
     <div class="body" id="body">
-      <div id="automaton"></div>
+      <canvas id="automaton"></canvas>
       <div id="error-log"></div>
     </div>
 

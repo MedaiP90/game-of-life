@@ -1,21 +1,24 @@
 class Renderer {
   #automaton = undefined;
   #htmlAutomaton = undefined;
-  #automatonGrid = [];
+  #htmlDisplayGrid = { checked: true };
+  #automatonContext = undefined;
   #automatonSize = 0;
-  #size = 0;
   #color = "#1b1b1b";
   #redraw = false;
   #gameProgress = false;
+  #pixelSize = 0;
   #redrawCallback = () => {};
+  #renderCallback = () => {};
+  #minFramerate = 10;
 
-  _rendererInterval = undefined;
-
-  constructor(automaton, htmlAutomaton, size, redrawCallback = () => {}) {
+  constructor(automaton, htmlAutomaton, htmlDisplayGrid, redrawCallback = () => {}, renderCallback = () => {}) {
     this.#automaton = automaton;
     this.#htmlAutomaton = htmlAutomaton;
-    this.#size = size;
+    this.#htmlDisplayGrid = htmlDisplayGrid;
+    this.#automatonContext = htmlAutomaton.getContext("2d");
     this.#redrawCallback = redrawCallback;
+    this.#renderCallback = renderCallback;
   }
 
   get color() {
@@ -23,27 +26,44 @@ class Renderer {
   }
 
   start() {
-    this._rendererInterval = setInterval(() => {
+    setTimeout(() => {
       let forceCellsDraw = false;
+      let redrawn = false;
 
       /* The grid has to be updated */
 
       if (this.#redraw) {
         this.#redraw = false;
         this.#automatonSize = this.#automaton.size;
+        forceCellsDraw = true;
+
         this.#buildGrid();
 
-        forceCellsDraw = true;
-        this.#redrawCallback();
+        redrawn = true;
       }
 
       /* Draw cells state on the grid */
 
+      const before = new Date().getTime();
+
       if (this.#gameProgress || forceCellsDraw) {
         forceCellsDraw = false;
+
         this.#drawCells();
       }
-    }, 33); // 30 fps
+
+      const after = new Date().getTime();
+
+      if (redrawn) {
+        this.#redrawCallback();
+      }
+
+      if (this.#gameProgress) {
+        this.#renderCallback(after - before + this.#minFramerate);
+      }
+
+      this.start();
+    }, this.#minFramerate);
   }
 
   redrawGrid() {
@@ -59,40 +79,43 @@ class Renderer {
   }
 
   #buildGrid() {
-    this.#automatonGrid = [];
+    this.#pixelSize = {
+      width: this.#htmlAutomaton.clientWidth / this.#automatonSize,
+      height: this.#htmlAutomaton.clientHeight / this.#automatonSize,
+    };
 
-    let gridColumnsTemplate = "";
-    let gridRowsTemplate = "";
-
-    for (let i = 0; i < this.#automatonSize; i++) {
-      gridColumnsTemplate += ` ${this.#size / this.#automatonSize}vh`;
-      gridRowsTemplate += ` ${this.#size / this.#automatonSize}vh`;
-    }
-
-    this.#htmlAutomaton.style["grid-template-columns"] = gridColumnsTemplate;
-    this.#htmlAutomaton.style["grid-template-rows"] = gridRowsTemplate;
-    this.#htmlAutomaton.innerHTML = "";
-
-    this.#automaton.grid.forEach((row, y) => {
-      this.#automatonGrid[y] = [];
-
-      row.forEach((cell, x) => {
-        this.#automatonGrid[y][x] = cell.htmlElement;
-        this.#htmlAutomaton.appendChild(this.#automatonGrid[y][x]);
-      });
-    });
+    this.#htmlAutomaton.width = this.#htmlAutomaton.clientWidth;
+    this.#htmlAutomaton.height = this.#htmlAutomaton.clientHeight;
   }
 
   #drawCells() {
-    this.#automatonGrid.forEach((row, y) => {
+    this.#automatonContext.clearRect(0, 0, this.#htmlAutomaton.width, this.#htmlAutomaton.height);
+
+    this.#automaton.grid.forEach((row, y) => {
       row.forEach((cell, x) => {
-        const cellState = this.#automaton.grid[y][x].state;
+        const cellState = cell.state;
         let cellOpacity = Math.floor(cellState * 255).toString(16);
 
         if (cellOpacity.length === 1) cellOpacity = `0${cellOpacity}`;
 
-        cell.style.background = cellState > 0 ? `${this.#color}${cellOpacity}` : `${this.#color}00`;
+        const computedColor = cellState > 0 ? `${this.#color}${cellOpacity}` : undefined;
+
+        if (computedColor != undefined) return this.#fillRect(computedColor, x, y);
+        if (this.#htmlDisplayGrid.checked) this.#rect("#1b1b1b42", x, y);
       });
     });
+  }
+
+  #fillRect(color, x, y) {
+    this.#automatonContext.fillStyle = color;
+    this.#automatonContext.fillRect(x * this.#pixelSize.width, y * this.#pixelSize.height, this.#pixelSize.width, this.#pixelSize.height);
+  }
+
+  #rect(color, x, y) {
+    this.#automatonContext.beginPath();
+    this.#automatonContext.lineWidth = "0.5";
+    this.#automatonContext.strokeStyle = color;
+    this.#automatonContext.rect(x * this.#pixelSize.width, y * this.#pixelSize.height, this.#pixelSize.width, this.#pixelSize.height);
+    this.#automatonContext.stroke();
   }
 }

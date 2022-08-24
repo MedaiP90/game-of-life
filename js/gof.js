@@ -1,15 +1,5 @@
 /* Utility functions */
 
-function cellGenerator(gridVisible, circularCells) {
-  const cell = document.createElement("div");
-
-  cell.style.background = "#ffffff";
-  if (gridVisible) cell.style["box-shadow"] = "0px 0px 0px 1px #1b1b1b42";
-  if (circularCells) cell.style["border-radius"] = "50%";
-
-  return cell;
-}
-
 function stopProgress() {
   clearInterval(gameProgress);
   gameProgress = undefined;
@@ -75,8 +65,8 @@ const presets = document.getElementById("rules-preset");
 const errorLog = document.getElementById("error-log");
 const cyclesStat = document.getElementById("cycles");
 const statusStat = document.getElementById("status");
+const fpsStat = document.getElementById("fps");
 const gridChk = document.getElementById("grid");
-const circlesChk = document.getElementById("circles");
 const bordersChk = document.getElementById("borders");
 const neighborsSel = document.getElementById("neighbors-type");
 const colorInput = document.getElementById("color");
@@ -139,7 +129,13 @@ const automaton = new Automaton(
 );
 
 // Create game renderer
-const renderer = new Renderer(automaton, grid, 96, () => (loader.style.display = "none"));
+const renderer = new Renderer(
+  automaton,
+  grid,
+  gridChk,
+  () => (loader.style.display = "none"),
+  (millis) => (fpsStat.innerHTML = Math.floor(1000 / millis))
+);
 
 /* Setup listeners */
 
@@ -171,6 +167,7 @@ generateBtn.addEventListener("click", () => {
   errorLog.innerHTML = "";
   cyclesStat.innerHTML = "--";
   statusStat.innerHTML = "--";
+  fpsStat.innerHTML = "--";
 
   setTimeout(() => {
     automaton.generateGrid(
@@ -178,7 +175,6 @@ generateBtn.addEventListener("click", () => {
       cellsPerRow = Number(size.value),
       neighborsType = neighborsSel.value,
       cellBehavior = rules.value,
-      cellBuilder = () => cellGenerator(gridChk.checked, circlesChk.checked),
       onCellError = (error) => {
         errorLog.innerHTML = error.message;
         errorLog.style.display = "inline";
