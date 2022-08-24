@@ -18,6 +18,10 @@ class Automaton {
     return this.#grid;
   }
 
+  get cycle() {
+    return this.#cycle;
+  }
+
   reset() {
     this.#cycle = 0;
     this.#grid = [];

@@ -3,6 +3,8 @@
   <head>
     <title>Game of life</title>
 
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
     <script src="./js/cell.js"></script>
     <script src="./js/automaton.js"></script>
     <script src="./js/renderer.js"></script>
@@ -67,7 +69,8 @@
         </div>
         <textarea cols="21" rows="10" spellcheck="false" id="rules"></textarea>
         <span class="caption">
-          There are two available variables: <code>currentState</code> is the state of the cell (between 0 and 1)
+          Write your set of rules in <em>JavaScript</em>, there are two available variables:
+          <code>currentState</code> is the state of the cell (between 0 and 1)
           and <code>neighbors</code> is the array of the cell's neighbors (<em>Moore or Von Neumann</em>).
           The rule <strong>must</strong> return the new state (between 0 and 1).
 
@@ -92,15 +95,19 @@
         <span>Status:</span>
         <span id="status" class="bold">--</span>
       </div>
+
+      <div class="big-space"></div>
+
+      <button id="screenshot" title="Take a picture of the automaton">Take a picture</button>
     </div>
 
-    <div class="body">
+    <div class="body" id="body">
       <div id="automaton"></div>
       <div id="error-log"></div>
     </div>
 
     <div class="version">
-      <a href="https://github.com/MedaiP90/game-of-life/tree/v1.3.1" target="_blank">v1.3.1</a>
+      <a href="https://github.com/MedaiP90/game-of-life/tree/v1.3.2" target="_blank">v1.3.2</a>
     </div>
 
     <div class="gh">

@@ -16,6 +16,7 @@ function stopProgress() {
 
   startBtn.innerHTML = "Start";
   generateBtn.disabled = false;
+  screenshotBtn.disabled = false;
 }
 
 function getRandomInt(min, max) {
@@ -39,6 +40,7 @@ const neighborsSel = document.getElementById("neighbors-type");
 const colorInput = document.getElementById("color");
 const generateBtn = document.getElementById("generator");
 const startBtn = document.getElementById("starter");
+const screenshotBtn = document.getElementById("screenshot");
 
 // Presets selection
 fetch("examples/index.json")
@@ -98,12 +100,14 @@ startBtn.addEventListener("click", () => {
     startBtn.innerHTML = "Pause";
     statusStat.innerHTML = "Running";
     generateBtn.disabled = true;
+    screenshotBtn.disabled = true;
   }
 });
 
 generateBtn.addEventListener("click", () => {
   startBtn.disabled = true;
   generateBtn.disabled = true;
+  screenshotBtn.disabled = true;
 
   errorLog.style.display = "none";
   errorLog.innerHTML = "";
@@ -136,6 +140,42 @@ generateBtn.addEventListener("click", () => {
 
   startBtn.disabled = false;
   generateBtn.disabled = false;
+  screenshotBtn.disabled = false;
+});
+
+screenshotBtn.addEventListener("click", () => {
+  html2canvas(document.getElementById("body"))
+    .then((tmpCanvas) => {
+      /* Write some info to the canvas */
+
+      const ctx = tmpCanvas.getContext("2d");
+      const left = 15;
+      const spacing = 10;
+      const lineHeight = 16;
+      const strings = [
+        `Behavior: ${presets.options[presets.selectedIndex].text}`,
+        `Neighborhood: ${neighborsSel.options[neighborsSel.selectedIndex].text}`,
+        `Width: ${size.value}`,
+        `Height: ${size.value}`,
+        `Cycle: ${automaton.cycle}`,
+      ];
+
+      // Text setup
+      ctx.font = `${lineHeight}px sans-serif`;
+      ctx.fillStyle = "#1b1b1b";
+
+      // Add text
+      strings.forEach((s, i) => ctx.fillText(s, left, 30 + i * (lineHeight + spacing)));
+
+      /* Download as image */
+
+      const tmpLink = document.createElement("a");
+
+      tmpLink.download = `cellular-automaton_${size.value}x${size.value}-${automaton.cycle}.png`;
+      tmpLink.href = tmpCanvas.toDataURL();
+
+      tmpLink.click();
+    });
 });
 
 colorInput.addEventListener("change", () => {

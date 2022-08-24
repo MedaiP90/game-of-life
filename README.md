@@ -10,6 +10,16 @@ The primary classifications of cellular automata, as outlined by Wolfram, are nu
 
 ## Links
 
-Available at: [https://medai-game-of-life.netlify.app](https://medai-game-of-life.netlify.app)
+Available at: [https://medai-cellular-automaton.netlify.app](https://medai-cellular-automaton.netlify.app)
 
 More on this app: [Cellular automaton - Wikipedia](https://en.wikipedia.org/wiki/Cellular_automaton)
+
+## Credits
+
+This project makes use of `html2canvas` for saving screenshots, more info [here](https://html2canvas.hertzen.com).
+
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=MedaiP90/game-of-life)](https://github.com/MedaiP90/game-of-life/graphs/contributors)
+
+Made with [contrib.rocks](https://contrib.rocks).
