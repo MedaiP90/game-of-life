@@ -6,13 +6,16 @@ class Renderer {
   #size = 0;
   #color = "#1b1b1b";
   #redraw = false;
+  #gameProgress = false;
+  #redrawCallback = () => {};
 
   _rendererInterval = undefined;
 
-  constructor(automaton, htmlAutomaton, size) {
+  constructor(automaton, htmlAutomaton, size, redrawCallback = () => {}) {
     this.#automaton = automaton;
     this.#htmlAutomaton = htmlAutomaton;
     this.#size = size;
+    this.#redrawCallback = redrawCallback;
   }
 
   get color() {
@@ -21,22 +24,34 @@ class Renderer {
 
   start() {
     this._rendererInterval = setInterval(() => {
+      let forceCellsDraw = false;
+
       /* The grid has to be updated */
 
       if (this.#redraw) {
         this.#redraw = false;
         this.#automatonSize = this.#automaton.size;
         this.#buildGrid();
+
+        forceCellsDraw = true;
+        this.#redrawCallback();
       }
 
       /* Draw cells state on the grid */
 
-      this.#drawCells();
+      if (this.#gameProgress || forceCellsDraw) {
+        forceCellsDraw = false;
+        this.#drawCells();
+      }
     }, 33); // 30 fps
   }
 
   redrawGrid() {
     this.#redraw = true;
+  }
+
+  toggleCellDraw() {
+    this.#gameProgress = !this.#gameProgress;
   }
 
   changeColor(baseColor) {

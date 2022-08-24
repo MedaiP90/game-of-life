@@ -20,7 +20,7 @@
 
       <div class="label-input" title="Select the size of the grid: N x N">
         <span>Size:</span>
-        <input type="number" min="2" max="145" id="size">
+        <input type="number" min="2" max="400" id="size">
       </div>
       <div class="label-input" title="Select cycle speed in milliseconds">
         <span>Speed (ms):</span>
@@ -62,6 +62,10 @@
 
       <div class="small-space"></div>
 
+      <div class="label-input" title="Define the amount of available statuses of the cells">
+        <span>Statuses:</span>
+        <input type="number" min="2" max="1000" id="cell-statuses">
+      </div>
       <div class="v-label-input" id="rule-input">
         <div class="label-input" title="Select a rules preset">
           <span>Cell behavior:</span>
@@ -75,13 +79,14 @@
           The rule <strong>must</strong> return the new state (between 0 and 1).
 
           <strong>NB: press <em>Generate</em> to apply the changes.</strong>
+
+          <br><br>Cell statuses: <div id="statuses-preview"></div>
         </span>
       </div>
 
       <div class="big-space"></div>
 
       <button id="generator" title="Generate a new random configuration">Generate</button>
-      <button id="starter" title="Start or pause the simulation" disabled>Start</button>
     </div>
 
     <div class="panel stats">
@@ -99,6 +104,7 @@
       <div class="big-space"></div>
 
       <button id="screenshot" title="Take a picture of the automaton">Take a picture</button>
+      <button id="starter" title="Start or pause the simulation" disabled>Start</button>
     </div>
 
     <div class="body" id="body">
@@ -107,12 +113,16 @@
     </div>
 
     <div class="version">
-      <a href="https://github.com/MedaiP90/game-of-life/tree/v1.3.2" target="_blank">v1.3.2</a>
+      <a href="https://github.com/MedaiP90/game-of-life/tree/v1.4.0" target="_blank">v1.4.0</a>
     </div>
 
     <div class="gh">
       Some examples on
       <a href="https://github.com/MedaiP90/game-of-life/tree/main/examples" target="_blank">GitHub</a>
+    </div>
+
+    <div id="loader">
+      <span id="loading-text">Loading ...</span>
     </div>
   </body>
 </html>

@@ -19,6 +19,47 @@ function stopProgress() {
   screenshotBtn.disabled = false;
 }
 
+function generateStatuses() {
+  statesList = [];
+
+  if (statuses.value < 2) statuses.value = 2;
+  if (statuses.value > 1000) statuses.value = 1000;
+
+  const availableStates = Number(statuses.value);
+  const step = 1 / (1 + (availableStates - 2));
+
+  let tmpState = 0;
+
+  while (tmpState <= 1) {
+    statesList.push(Number(tmpState.toFixed(4)));
+    tmpState += step;
+  }
+
+  const statusesContainer = document.getElementById("statuses-preview");
+
+  statusesContainer.innerHTML = "";
+  statesList.forEach((status) => {
+    const sButton = document.createElement("button");
+
+    sButton.textContent = status;
+    sButton.className = "status-button";
+    sButton.title = `Click to insert the value "${status}" in the text area at the current position`;
+
+    sButton.addEventListener("click", () => {
+      if (rules.selectionStart || rules.selectionStart == "0") {
+        const startPos = rules.selectionStart;
+        const endPos = rules.selectionEnd;
+
+        rules.value = rules.value.substring(0, startPos) + status + rules.value.substring(endPos, rules.value.length);
+      } else {
+        rules.value += status;
+      }
+    });
+
+    statusesContainer.appendChild(sButton);
+  });
+}
+
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -29,6 +70,7 @@ const grid = document.getElementById("automaton");
 const size = document.getElementById("size");
 const speed = document.getElementById("speed");
 const rules = document.getElementById("rules");
+const statuses = document.getElementById("cell-statuses");
 const presets = document.getElementById("rules-preset");
 const errorLog = document.getElementById("error-log");
 const cyclesStat = document.getElementById("cycles");
@@ -41,6 +83,13 @@ const colorInput = document.getElementById("color");
 const generateBtn = document.getElementById("generator");
 const startBtn = document.getElementById("starter");
 const screenshotBtn = document.getElementById("screenshot");
+const loader = document.getElementById("loader");
+
+/* Define variables */
+
+let gameProgress = undefined;
+let gameRenderer = undefined;
+let statesList = [];
 
 // Presets selection
 fetch("examples/index.json")
@@ -55,6 +104,7 @@ fetch("examples/index.json")
       htmlPreset.innerHTML = preset.name;
       htmlPreset.value = preset.file;
       htmlPreset.setAttribute("neighborhood", preset.neighborhood || "");
+      htmlPreset.setAttribute("statuses", preset.statuses || "");
 
       presets.appendChild(htmlPreset);
     });
@@ -63,9 +113,13 @@ fetch("examples/index.json")
       const selected = presets.value;
       const path = `examples/${selected}`;
       const nt = presets.options[presets.selectedIndex].getAttribute("neighborhood");
+      const st = presets.options[presets.selectedIndex].getAttribute("statuses");
 
       if (nt != "") neighborsSel.value = nt;
+      if (st != "") statuses.value = Number(st);
       if (selected == "--") return rules.value = "";
+
+      generateStatuses();
 
       try {
         const response = await fetch(path);
@@ -85,7 +139,7 @@ const automaton = new Automaton(
 );
 
 // Create game renderer
-const renderer = new Renderer(automaton, grid, 96);
+const renderer = new Renderer(automaton, grid, 96, () => (loader.style.display = "none"));
 
 /* Setup listeners */
 
@@ -102,9 +156,13 @@ startBtn.addEventListener("click", () => {
     generateBtn.disabled = true;
     screenshotBtn.disabled = true;
   }
+
+  renderer.toggleCellDraw();
 });
 
 generateBtn.addEventListener("click", () => {
+  loader.style.display = "flex";
+
   startBtn.disabled = true;
   generateBtn.disabled = true;
   screenshotBtn.disabled = true;
@@ -114,36 +172,42 @@ generateBtn.addEventListener("click", () => {
   cyclesStat.innerHTML = "--";
   statusStat.innerHTML = "--";
 
-  automaton.generateGrid(
-    cellsPerRow = Number(size.value),
-    neighborsType = neighborsSel.value,
-    cellBehavior = rules.value,
-    cellBuilder = () => cellGenerator(gridChk.checked, circlesChk.checked),
-    onCellError = (error) => {
-      errorLog.innerHTML = error.message;
-      errorLog.style.display = "inline";
-      statusStat.innerHTML = "Error";
-
-      stopProgress();
-    }
-  );
-
-  // Generate initial active cells
-  automaton.initializeGrid(
-    totalCells = getRandomInt(1, automaton.size * automaton.size),
-    randomFunction = () => getRandomInt(0, automaton.size - 1),
-    stateFunction = () => 1
-  );
-
-  // Trigger grid update
-  renderer.redrawGrid();
-
-  startBtn.disabled = false;
-  generateBtn.disabled = false;
-  screenshotBtn.disabled = false;
+  setTimeout(() => {
+    automaton.generateGrid(
+      crossBorders = bordersChk.checked,
+      cellsPerRow = Number(size.value),
+      neighborsType = neighborsSel.value,
+      cellBehavior = rules.value,
+      cellBuilder = () => cellGenerator(gridChk.checked, circlesChk.checked),
+      onCellError = (error) => {
+        errorLog.innerHTML = error.message;
+        errorLog.style.display = "inline";
+        statusStat.innerHTML = "Error";
+  
+        stopProgress();
+      }
+    );
+  
+    // Generate initial active cells
+    automaton.initializeGrid(
+      totalCells = getRandomInt(1, automaton.size * automaton.size),
+      randomFunction = () => getRandomInt(0, automaton.size - 1),
+      stateFunction = () => statesList[getRandomInt(1, statesList.length - 1)]
+    );
+  
+    // Trigger grid update
+    renderer.redrawGrid();
+  
+    startBtn.disabled = false;
+    generateBtn.disabled = false;
+    screenshotBtn.disabled = false;
+  }, 100);
 });
 
 screenshotBtn.addEventListener("click", () => {
+  loader.style.display = "flex";
+  screenshotBtn.disabled = true;
+
   html2canvas(document.getElementById("body"))
     .then((tmpCanvas) => {
       /* Write some info to the canvas */
@@ -155,8 +219,9 @@ screenshotBtn.addEventListener("click", () => {
       const strings = [
         `Behavior: ${presets.options[presets.selectedIndex].text}`,
         `Neighborhood: ${neighborsSel.options[neighborsSel.selectedIndex].text}`,
-        `Width: ${size.value}`,
-        `Height: ${size.value}`,
+        `Cell statuses: ${statuses.value}`,
+        `Size: ${size.value}x${size.value}`,
+        `Can cross borders: ${bordersChk.checked}`,
         `Cycle: ${automaton.cycle}`,
       ];
 
@@ -175,6 +240,12 @@ screenshotBtn.addEventListener("click", () => {
       tmpLink.href = tmpCanvas.toDataURL();
 
       tmpLink.click();
+      screenshotBtn.disabled = false;
+      loader.style.display = "none";
+    })
+    .catch(() => {
+      screenshotBtn.disabled = false;
+      loader.style.display = "none"
     });
 });
 
@@ -183,15 +254,16 @@ colorInput.addEventListener("change", () => {
   document.getElementById("color-preview").style.background = renderer.color;
 });
 
-/* Define variables */
-
-let gameProgress = undefined;
-let gameRenderer = undefined;
+statuses.addEventListener("change", () => generateStatuses());
 
 /* Initialize */
 
 size.value = 10;
 speed.value = 500;
+statuses.value = 2;
 
+generateStatuses();
 renderer.changeColor("#1b1b1b");
 renderer.start();
+
+loader.style.display = "none";

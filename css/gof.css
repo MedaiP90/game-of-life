@@ -90,6 +90,20 @@ textarea {
   font-weight: bold;
 }
 
+.status-button {
+  font-size: 0.8em;
+}
+
+#loader {
+  position: absolute;
+  inset: 0;
+  background: #ffffff8f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
 #color {
   max-width: 15ch;
 }
@@ -108,7 +122,8 @@ textarea {
 
 #color-preview {
   background: #1b1b1b;
-  height: 1em;
+  min-height: 1em;
+  max-height: 1em;
   border-radius: 4px;
   border: 1px solid #1b1b1b;
 }
@@ -133,4 +148,18 @@ textarea {
 
 #rules-preset {
   display: none;
+}
+
+#statuses-preview {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 0.2em;
+  gap: 0.2em;
+}
+
+#loading-text {
+  background: white;
+  padding: 1em;
+  border-radius: 4px;
 }

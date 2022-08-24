@@ -3,6 +3,7 @@ class Automaton {
   #grid = [];
   #size = 0;
   #neighborsType = "m";
+  #crossBorders = true;
 
   #updateStats = () => {};
 
@@ -28,6 +29,7 @@ class Automaton {
   }
 
   generateGrid(
+    crossBorders,
     cellsPerRow = 0,
     neighborsType = "m",
     cellBehavior = "",
@@ -35,6 +37,7 @@ class Automaton {
     onCellError = (e) => console.error(e)
   ) {
     this.reset();
+    this.#crossBorders = crossBorders;
     this.#size = cellsPerRow;
     this.#neighborsType = neighborsType;
 
@@ -64,16 +67,16 @@ class Automaton {
     for (let y = 0; y < cellsPerRow; y++) {
       for (let x = 0; x < cellsPerRow; x++) {
         const yB = y - 1 < 0
-          ? bordersChk.checked ? cellsPerRow - 1 : undefined
+          ? this.#crossBorders ? cellsPerRow - 1 : undefined
           : y - 1;
         const xB = x - 1 < 0
-          ? bordersChk.checked ? cellsPerRow - 1 : undefined
+          ? this.#crossBorders ? cellsPerRow - 1 : undefined
           : x - 1;
         const yA = y + 1 == cellsPerRow
-          ? bordersChk.checked ? 0 : undefined
+          ? this.#crossBorders ? 0 : undefined
           : y + 1;
         const xA = x + 1 == cellsPerRow
-          ? bordersChk.checked ? 0 : undefined
+          ? this.#crossBorders ? 0 : undefined
           : x + 1;
 
         const moore = this.#neighborsType == "m"
