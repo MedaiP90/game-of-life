@@ -65,6 +65,7 @@ const presets = document.getElementById("rules-preset");
 const errorLog = document.getElementById("error-log");
 const cyclesStat = document.getElementById("cycles");
 const statusStat = document.getElementById("status");
+const fpsStat = document.getElementById("fps");
 const gridChk = document.getElementById("grid");
 const bordersChk = document.getElementById("borders");
 const neighborsSel = document.getElementById("neighbors-type");
@@ -128,7 +129,13 @@ const automaton = new Automaton(
 );
 
 // Create game renderer
-const renderer = new Renderer(automaton, grid, gridChk, () => (loader.style.display = "none"));
+const renderer = new Renderer(
+  automaton,
+  grid,
+  gridChk,
+  () => (loader.style.display = "none"),
+  (millis) => (fpsStat.innerHTML = Math.floor(1000 / millis))
+);
 
 /* Setup listeners */
 
@@ -160,6 +167,7 @@ generateBtn.addEventListener("click", () => {
   errorLog.innerHTML = "";
   cyclesStat.innerHTML = "--";
   statusStat.innerHTML = "--";
+  fpsStat.innerHTML = "--";
 
   setTimeout(() => {
     automaton.generateGrid(

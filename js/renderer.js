@@ -9,13 +9,16 @@ class Renderer {
   #gameProgress = false;
   #pixelSize = 0;
   #redrawCallback = () => {};
+  #renderCallback = () => {};
+  #minFramerate = 10;
 
-  constructor(automaton, htmlAutomaton, htmlDisplayGrid, redrawCallback = () => {}) {
+  constructor(automaton, htmlAutomaton, htmlDisplayGrid, redrawCallback = () => {}, renderCallback = () => {}) {
     this.#automaton = automaton;
     this.#htmlAutomaton = htmlAutomaton;
     this.#htmlDisplayGrid = htmlDisplayGrid;
     this.#automatonContext = htmlAutomaton.getContext("2d");
     this.#redrawCallback = redrawCallback;
+    this.#renderCallback = renderCallback;
   }
 
   get color() {
@@ -25,6 +28,7 @@ class Renderer {
   start() {
     setTimeout(() => {
       let forceCellsDraw = false;
+      let redrawn = false;
 
       /* The grid has to be updated */
 
@@ -34,9 +38,13 @@ class Renderer {
         forceCellsDraw = true;
 
         this.#buildGrid();
+
+        redrawn = true;
       }
 
       /* Draw cells state on the grid */
+
+      const before = new Date().getTime();
 
       if (this.#gameProgress || forceCellsDraw) {
         forceCellsDraw = false;
@@ -44,10 +52,18 @@ class Renderer {
         this.#drawCells();
       }
 
-      if (!this.#gameProgress) this.#redrawCallback();
+      const after = new Date().getTime();
+
+      if (redrawn) {
+        this.#redrawCallback();
+      }
+
+      if (this.#gameProgress) {
+        this.#renderCallback(after - before + this.#minFramerate);
+      }
 
       this.start();
-    }, 33);
+    }, this.#minFramerate);
   }
 
   redrawGrid() {
