@@ -31,17 +31,18 @@ class Renderer {
       if (this.#redraw) {
         this.#redraw = false;
         this.#automatonSize = this.#automaton.size;
-        this.#buildGrid();
-
         forceCellsDraw = true;
-        this.#redrawCallback();
+
+        this.#buildGrid();
       }
 
       /* Draw cells state on the grid */
 
       if (this.#gameProgress || forceCellsDraw) {
         forceCellsDraw = false;
+
         this.#drawCells();
+        this.#redrawCallback();
       }
 
       this.start();
@@ -68,17 +69,11 @@ class Renderer {
 
     this.#htmlAutomaton.width = this.#htmlAutomaton.clientWidth;
     this.#htmlAutomaton.height = this.#htmlAutomaton.clientHeight;
-
-    if (!this.#htmlDisplayGrid.checked) return;
-
-    this.#automaton.grid.forEach((row, y) => {
-      row.forEach((_cell, x) => {
-        this.#rect("#1b1b1b42", x, y);
-      });
-    });
   }
 
   #drawCells() {
+    this.#automatonContext.clearRect(0, 0, this.#htmlAutomaton.width, this.#htmlAutomaton.height);
+
     this.#automaton.grid.forEach((row, y) => {
       row.forEach((cell, x) => {
         const cellState = cell.state;
@@ -87,8 +82,6 @@ class Renderer {
         if (cellOpacity.length === 1) cellOpacity = `0${cellOpacity}`;
 
         const computedColor = cellState > 0 ? `${this.#color}${cellOpacity}` : undefined;
-
-        this.#fillRect("white", x, y);
 
         if (computedColor != undefined) return this.#fillRect(computedColor, x, y);
         if (this.#htmlDisplayGrid.checked) this.#rect("#1b1b1b42", x, y);
