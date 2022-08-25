@@ -283,7 +283,7 @@ statuses.addEventListener("change", () => generateStatuses());
 /* Initialize */
 
 size.value = 10;
-speed.value = 500;
+speed.value = 30;
 statuses.value = 2;
 
 generateStatuses();
