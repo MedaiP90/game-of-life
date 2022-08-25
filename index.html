@@ -3,8 +3,6 @@
   <head>
     <title>Game of life</title>
 
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-
     <script src="./js/cell.js"></script>
     <script src="./js/automaton.js"></script>
     <script src="./js/renderer.js"></script>
@@ -23,8 +21,8 @@
           <span>Size:</span>
           <input type="number" min="2" max="1080" id="size">
         </div>
-        <div class="label-input" title="Select cycle speed in milliseconds">
-          <span>Speed (ms):</span>
+        <div class="label-input" title="Select minimum speed per cycle in milliseconds">
+          <span>Min. speed (ms):</span>
           <input type="number" min="30" max="10000" step="10" id="speed">
         </div>
 
@@ -98,6 +96,13 @@
         <div class="label-input">
           <span>Cycles:</span>
           <span id="cycles" class="bold">--</span>
+        </div>
+        <div class="label-input">
+          <span>Compute time:</span>
+          <span class="bold">
+            <span id="compute">--</span>
+            <span>ms</span>
+          </span>
         </div>
         <div class="label-input">
           <span>FPS:</span>

@@ -94,16 +94,46 @@ class Automaton {
   }
 
   simulate() {
-    this.#grid.forEach((row) => {
-      row.forEach((cell) => {
-        if (cell.hasNeighbors) cell.behave();
-      });
-    });
+    const before = new Date().getTime();
 
-    this.#grid.forEach((row) => {
-      row.forEach((cell) => cell.flush());
-    });
+    this.#cellsRecursion(0, this.#size - 1, 0, this.#size - 1, this.#behaveCell);
+    this.#cellsRecursion(0, this.#size - 1, 0, this.#size - 1, this.#flushCell);
 
-    this.#updateStats(++this.#cycle);
+    const after = new Date().getTime();
+
+    this.#updateStats(++this.#cycle, after - before);
+  }
+
+  #cellsRecursion(xStart, xEnd, yStart, yEnd, callback) {
+    // Base case
+    if (xStart == xEnd && yStart == yEnd) {
+      callback(this.#grid[yStart][xStart]);
+      return;
+    }
+
+    if (xStart == xEnd) {
+      this.#cellsRecursion(xStart, xEnd, yStart, Math.floor((yStart + yEnd) / 2), callback);
+      this.#cellsRecursion(xStart, xEnd, Math.floor((yStart + yEnd) / 2) + 1, yEnd, callback);
+      return;
+    }
+
+    if (yStart == yEnd) {
+      this.#cellsRecursion(xStart, Math.floor((xStart + xEnd) / 2), yStart, yEnd, callback);
+      this.#cellsRecursion(Math.floor((xStart + xEnd) / 2) + 1, xEnd, yStart, yEnd, callback);
+      return;
+    }
+
+    this.#cellsRecursion(xStart, Math.floor((xStart + xEnd) / 2), yStart, Math.floor((yStart + yEnd) / 2), callback);
+    this.#cellsRecursion(Math.floor((xStart + xEnd) / 2) + 1, xEnd, yStart, Math.floor((yStart + yEnd) / 2), callback);
+    this.#cellsRecursion(xStart, Math.floor((xStart + xEnd) / 2), Math.floor((yStart + yEnd) / 2) + 1, yEnd, callback);
+    this.#cellsRecursion(Math.floor((xStart + xEnd) / 2) + 1, xEnd, Math.floor((yStart + yEnd) / 2) + 1, yEnd, callback);
+  }
+
+  #behaveCell(cell) {
+    if (cell.hasNeighbors) cell.behave();
+  }
+
+  #flushCell(cell) {
+    cell.flush();
   }
 }

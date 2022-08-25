@@ -90,6 +90,7 @@ class Renderer {
   }
 
   #drawCells(xStart, xEnd, yStart, yEnd) {
+    // Base case
     if (xStart == xEnd && yStart == yEnd) {
       this.#drawSingleCell(this.#automaton.grid[yStart][xStart], xStart, yStart);
       return;
