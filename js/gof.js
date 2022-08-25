@@ -159,7 +159,7 @@ startBtn.addEventListener("click", () => {
 
     statusStat.innerHTML = "Stopped";
   } else {
-    gameProgress = setTimeout(startProgress, 100);
+    startProgress();
 
     startBtn.innerHTML = "Pause";
     statusStat.innerHTML = "Running";
