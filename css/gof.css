@@ -13,35 +13,23 @@ textarea {
   resize: none;
 }
 
-.body {
+.main {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
+  padding: 0 1em 0.5em 1em;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr min-content;
   justify-content: center;
-  align-items: center;
-  pointer-events: none;
+  gap: 1.5em;
 }
 
 .panel {
-  position: absolute;
   display: flex;
   flex-direction: column;
+  max-height: 100%;
+  overflow: auto;
   gap: 0.6em;
-  min-width: 33ch;
-  max-width: 35ch;
-}
-
-.settings {
-  left: 1em;
-  max-height: 96vh;
-  overflow: auto;
-}
-
-.stats {
-  right: 1em;
-  max-height: 96vh;
-  overflow: auto;
 }
 
 .label-input {
@@ -58,8 +46,16 @@ textarea {
   gap: 0.2em;
 }
 
+.status-button {
+  font-size: 0.8em;
+}
+
 .caption {
   font-size: 0.7em;
+}
+
+.small-text {
+  font-size: 0.8em;
 }
 
 .small-space {
@@ -72,26 +68,12 @@ textarea {
   width: 2.2em;
 }
 
-.gh {
-  position: absolute;
-  bottom: 0.5em;
-  right: 0.5em;
-  font-size: 0.8em;
-}
-
-.version {
-  position: absolute;
-  bottom: 0.5em;
-  left: 0.5em;
-  font-size: 0.8em;
-}
-
 .bold {
   font-weight: bold;
 }
 
-.status-button {
-  font-size: 0.8em;
+.text-end {
+  text-align: end;
 }
 
 #loader {
@@ -104,14 +86,23 @@ textarea {
   z-index: 10;
 }
 
+#body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+}
+
 #color {
   max-width: 15ch;
 }
 
 #automaton {
   background: white;
-  height: 96vh;
-  width: 96vh;
+  height: 100%;
+  width: 100%;
   border-radius: 4px;
   overflow: hidden;
   box-shadow:

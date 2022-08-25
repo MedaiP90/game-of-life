@@ -15,110 +15,116 @@
   </head>
 
   <body>
-    <div class="panel settings">
-      <h1>Settings</h1>
+    <div class="main">
+      <div class="panel settings">
+        <h1>Settings</h1>
 
-      <div class="label-input" title="Select the size of the grid: N x N">
-        <span>Size:</span>
-        <input type="number" min="2" max="1080" id="size">
-      </div>
-      <div class="label-input" title="Select cycle speed in milliseconds">
-        <span>Speed (ms):</span>
-        <input type="number" min="30" max="10000" step="10" id="speed">
-      </div>
-
-      <div class="small-space"></div>
-
-      <div class="label-input" title="Display the grid or not">
-        <span>Display grid:</span>
-        <input type="checkbox" id="grid" value="1" checked>
-      </div>
-      <div class="label-input" title="Cells at the other side of the grid can be considered as neighbors">
-        <span>Cross borders:</span>
-        <input type="checkbox" id="borders" value="3" checked>
-      </div>
-      <div class="label-input" title="Select neighborhood type (Von Neumann or Moore)">
-        <span>Neighborhood:</span>
-        <select id="neighbors-type">
-          <option value="m" selected>Moore</option>
-          <option value="n">Von Neumann</option>
-        </select>
-      </div>
-
-      <div class="small-space"></div>
-
-      <div class="label-input" title="Change the color of the cells">
-        <span>Color:</span>
-        <div>
-          <input type="text" id="color" value="#1b1b1b">
-          <button>Select</button>
+        <div class="label-input" title="Select the size of the grid: N x N">
+          <span>Size:</span>
+          <input type="number" min="2" max="1080" id="size">
         </div>
-      </div>
-      <div id="color-preview"></div>
-
-      <div class="small-space"></div>
-
-      <div class="label-input" title="Define the amount of available statuses of the cells">
-        <span>Statuses:</span>
-        <input type="number" min="2" max="1000" id="cell-statuses">
-      </div>
-      <div class="v-label-input" id="rule-input">
-        <div class="label-input" title="Select a rules preset">
-          <span>Cell behavior:</span>
-          <select id="rules-preset"></select>
+        <div class="label-input" title="Select cycle speed in milliseconds">
+          <span>Speed (ms):</span>
+          <input type="number" min="30" max="10000" step="10" id="speed">
         </div>
-        <textarea cols="21" rows="10" spellcheck="false" id="rules"></textarea>
-        <span class="caption">
-          Write your set of rules in <em>JavaScript</em>, there are two available variables:
-          <code>currentState</code> is the state of the cell (between 0 and 1)
-          and <code>neighbors</code> is the array of the cell's neighbors (<em>Moore or Von Neumann</em>).
-          The rule <strong>must</strong> return the new state (between 0 and 1).
 
-          <strong>NB: press <em>Generate</em> to apply the changes.</strong>
+        <div class="small-space"></div>
 
-          <br><br>Cell statuses: <div id="statuses-preview"></div>
-        </span>
+        <div class="label-input" title="Display the grid or not">
+          <span>Display grid:</span>
+          <input type="checkbox" id="grid" value="1" checked>
+        </div>
+        <div class="label-input" title="Cells at the other side of the grid can be considered as neighbors">
+          <span>Cross borders:</span>
+          <input type="checkbox" id="borders" value="3" checked>
+        </div>
+        <div class="label-input" title="Select neighborhood type (Von Neumann or Moore)">
+          <span>Neighborhood:</span>
+          <select id="neighbors-type">
+            <option value="m" selected>Moore</option>
+            <option value="n">Von Neumann</option>
+          </select>
+        </div>
+
+        <div class="small-space"></div>
+
+        <div class="label-input" title="Change the color of the cells">
+          <span>Color:</span>
+          <div>
+            <input type="text" id="color" value="#1b1b1b">
+            <button>Select</button>
+          </div>
+        </div>
+        <div id="color-preview"></div>
+
+        <div class="small-space"></div>
+
+        <div class="label-input" title="Define the amount of available statuses of the cells">
+          <span>Statuses:</span>
+          <input type="number" min="2" max="1000" id="cell-statuses">
+        </div>
+        <div class="v-label-input" id="rule-input">
+          <div class="label-input" title="Select a rules preset">
+            <span>Cell behavior:</span>
+            <select id="rules-preset"></select>
+          </div>
+          <textarea cols="21" rows="10" spellcheck="false" id="rules"></textarea>
+          <span class="caption">
+            Write your set of rules in <em>JavaScript</em>, there are two available variables:
+            <code>currentState</code> is the state of the cell (between 0 and 1)
+            and <code>neighbors</code> is the array of the cell's neighbors (<em>Moore or Von Neumann</em>).
+            The rule <strong>must</strong> return the new state (between 0 and 1).
+
+            <strong>NB: press <em>Generate</em> to apply the changes.</strong>
+
+            <br><br>Cell statuses: <div id="statuses-preview"></div>
+          </span>
+        </div>
+
+        <div class="big-space"></div>
+
+        <button id="generator" title="Generate a new random configuration">Generate</button>
+        <div class="small-space"></div>
       </div>
 
-      <div class="big-space"></div>
-
-      <button id="generator" title="Generate a new random configuration">Generate</button>
-    </div>
-
-    <div class="panel stats">
-      <h1>Stats</h1>
-
-      <div class="label-input">
-        <span>Cycles:</span>
-        <span id="cycles" class="bold">--</span>
-      </div>
-      <div class="label-input">
-        <span>FPS:</span>
-        <span id="fps" class="bold">--</span>
-      </div>
-      <div class="label-input">
-        <span>Status:</span>
-        <span id="status" class="bold">--</span>
+      <div id="body">
+        <canvas id="automaton"></canvas>
+        <div id="error-log"></div>
       </div>
 
-      <div class="big-space"></div>
+      <div class="panel stats">
+        <h1>Stats</h1>
 
-      <button id="screenshot" title="Take a picture of the automaton">Take a picture</button>
-      <button id="starter" title="Start or pause the simulation" disabled>Start</button>
-    </div>
+        <div class="label-input">
+          <span>Cycles:</span>
+          <span id="cycles" class="bold">--</span>
+        </div>
+        <div class="label-input">
+          <span>FPS:</span>
+          <span id="fps" class="bold">--</span>
+        </div>
+        <div class="label-input">
+          <span>Status:</span>
+          <span id="status" class="bold">--</span>
+        </div>
 
-    <div class="body" id="body">
-      <canvas id="automaton"></canvas>
-      <div id="error-log"></div>
-    </div>
+        <div class="big-space"></div>
 
-    <div class="version">
-      <a href="https://github.com/MedaiP90/game-of-life/tree/v1.5.0" target="_blank">v1.5.0</a>
-    </div>
+        <button id="screenshot" title="Take a picture of the automaton">Take a picture</button>
+        <button id="starter" title="Start or pause the simulation" disabled>Start</button>
+        <div class="small-space"></div>
+      </div>
 
-    <div class="gh">
-      Some examples on
-      <a href="https://github.com/MedaiP90/game-of-life/tree/main/examples" target="_blank">GitHub</a>
+      <div class="small-text">
+        <a href="https://github.com/MedaiP90/game-of-life/tree/v1.5.1" target="_blank">v1.5.1</a>
+      </div>
+  
+      <div></div>
+
+      <div class="small-text text-end">
+        Some examples on
+        <a href="https://github.com/MedaiP90/game-of-life/tree/main/examples" target="_blank">GitHub</a>
+      </div>
     </div>
 
     <div id="loader">
