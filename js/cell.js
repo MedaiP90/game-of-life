@@ -4,6 +4,7 @@ class Cell {
 
   #cellBehavior = "";
   #neighborhood = [];
+  #memory = {};
   #onError = () => {};
 
   constructor(cellBehavior, onError) {
@@ -21,8 +22,8 @@ class Cell {
 
   behave() {
     try {
-      const behavior = new Function("currentState", "neighbors", this.#cellBehavior);
-      this.tmpState = behavior(this.state, this.#neighborhood);
+      const behavior = new Function("currentState", "neighbors", "memory", this.#cellBehavior);
+      this.tmpState = behavior(this.state, this.#neighborhood, this.#memory);
     } catch (error) {
       this.#onError(error);
     }
@@ -30,5 +31,9 @@ class Cell {
 
   flush() {
     this.state = this.tmpState;
+  }
+
+  getFromMemory(key) {
+    return this.#memory[key];
   }
 }

@@ -68,10 +68,13 @@
           </div>
           <textarea cols="21" rows="10" spellcheck="false" id="rules"></textarea>
           <span class="caption">
-            Write your set of rules in <em>JavaScript</em>, there are two available variables:
-            <code>currentState</code> is the state of the cell (between 0 and 1)
-            and <code>neighbors</code> is the array of the cell's neighbors (<em>Moore or Von Neumann</em>).
-            The rule <strong>must</strong> return the new state (between 0 and 1).
+            Write your set of rules in <em>JavaScript</em>, there are 3 variables available:
+            <code>currentState</code> is the state of the cell (between 0 and 1),
+            <code>neighbors</code> is the array of the cell's neighborhood (<em>Moore or Von Neumann</em>)
+            and <code>memory</code> is a key-value dictionary to store info about the cell.
+            Every neighbor in the array exposes the variable <code>state</code> (as the <code>currentState</code> above)
+            and the method <code>getFromMemory(key)</code>, that gives a value from its memory.
+            The instructions <strong>must</strong> return the new state (between 0 and 1).
 
             <strong>NB: press <em>Generate</em> to apply the changes.</strong>
 
@@ -124,7 +127,7 @@
       </div>
 
       <div class="small-text">
-        <a href="https://github.com/MedaiP90/game-of-life/tree/v1.6.2" target="_blank">v1.6.2</a>
+        <a href="https://github.com/MedaiP90/game-of-life/tree/v1.7.0" target="_blank">v1.7.0</a>
       </div>
   
       <div></div>
