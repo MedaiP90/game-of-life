@@ -1,19 +1,17 @@
 /* Utility functions */
 
 function stopProgress() {
-  clearInterval(gameProgress);
-  gameProgress = undefined;
-
+  gameProgress = false;
   startBtn.innerHTML = "Start";
   generateBtn.disabled = false;
   screenshotBtn.disabled = false;
 }
 
 function startProgress() {
-  gameProgress = setTimeout(
+  setTimeout(
     () => {
       automaton.simulate();
-      startProgress();
+      if (gameProgress) startProgress();
     },
     Number(speed.value)
   );
@@ -88,7 +86,7 @@ const loader = document.getElementById("loader");
 
 /* Define variables */
 
-let gameProgress = undefined;
+let gameProgress = false;
 let gameRenderer = undefined;
 let statesList = [];
 
@@ -154,11 +152,13 @@ const renderer = new Renderer(
 /* Setup listeners */
 
 startBtn.addEventListener("click", () => {
-  if (gameProgress != undefined) {
+  if (gameProgress) {
     stopProgress();
 
     statusStat.innerHTML = "Stopped";
   } else {
+    gameProgress = true;
+
     startProgress();
 
     startBtn.innerHTML = "Pause";
@@ -194,8 +194,11 @@ generateBtn.addEventListener("click", () => {
         errorLog.innerHTML = error.message;
         errorLog.style.display = "inline";
         statusStat.innerHTML = "Error";
+
+        console.error(error);
   
         stopProgress();
+        renderer.toggleCellDraw(false);
       }
     );
   

@@ -71,8 +71,9 @@ class Renderer {
     this.#redraw = true;
   }
 
-  toggleCellDraw() {
-    this.#gameProgress = !this.#gameProgress;
+  toggleCellDraw(newValue) {
+    if (newValue == undefined) return this.#gameProgress = !this.#gameProgress;
+    this.#gameProgress = newValue;
   }
 
   changeColor(baseColor) {
