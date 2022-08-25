@@ -10,7 +10,7 @@ class Renderer {
   #pixelSize = 0;
   #redrawCallback = () => {};
   #renderCallback = () => {};
-  #minFramerate = 10;
+  #minFramerate = 5;
 
   constructor(automaton, htmlAutomaton, htmlDisplayGrid, redrawCallback = () => {}, renderCallback = () => {}) {
     this.#automaton = automaton;
@@ -49,7 +49,8 @@ class Renderer {
       if (this.#gameProgress || forceCellsDraw) {
         forceCellsDraw = false;
 
-        this.#drawCells();
+        this.#automatonContext.clearRect(0, 0, this.#htmlAutomaton.width, this.#htmlAutomaton.height);
+        this.#drawCells(0, this.#automatonSize - 1, 0, this.#automatonSize - 1);
       }
 
       const after = new Date().getTime();
@@ -88,22 +89,41 @@ class Renderer {
     this.#htmlAutomaton.height = this.#htmlAutomaton.clientHeight;
   }
 
-  #drawCells() {
-    this.#automatonContext.clearRect(0, 0, this.#htmlAutomaton.width, this.#htmlAutomaton.height);
+  #drawCells(xStart, xEnd, yStart, yEnd) {
+    // Base case
+    if (xStart == xEnd && yStart == yEnd) {
+      this.#drawSingleCell(this.#automaton.grid[yStart][xStart], xStart, yStart);
+      return;
+    }
 
-    this.#automaton.grid.forEach((row, y) => {
-      row.forEach((cell, x) => {
-        const cellState = cell.state;
-        let cellOpacity = Math.floor(cellState * 255).toString(16);
+    if (xStart == xEnd) {
+      this.#drawCells(xStart, xEnd, yStart, Math.floor((yStart + yEnd) / 2));
+      this.#drawCells(xStart, xEnd, Math.floor((yStart + yEnd) / 2) + 1, yEnd);
+      return;
+    }
 
-        if (cellOpacity.length === 1) cellOpacity = `0${cellOpacity}`;
+    if (yStart == yEnd) {
+      this.#drawCells(xStart, Math.floor((xStart + xEnd) / 2), yStart, yEnd);
+      this.#drawCells(Math.floor((xStart + xEnd) / 2) + 1, xEnd, yStart, yEnd);
+      return;
+    }
 
-        const computedColor = cellState > 0 ? `${this.#color}${cellOpacity}` : undefined;
+    this.#drawCells(xStart, Math.floor((xStart + xEnd) / 2), yStart, Math.floor((yStart + yEnd) / 2));
+    this.#drawCells(Math.floor((xStart + xEnd) / 2) + 1, xEnd, yStart, Math.floor((yStart + yEnd) / 2));
+    this.#drawCells(xStart, Math.floor((xStart + xEnd) / 2), Math.floor((yStart + yEnd) / 2) + 1, yEnd);
+    this.#drawCells(Math.floor((xStart + xEnd) / 2) + 1, xEnd, Math.floor((yStart + yEnd) / 2) + 1, yEnd);
+  }
 
-        if (computedColor != undefined) return this.#fillRect(computedColor, x, y);
-        if (this.#htmlDisplayGrid.checked) this.#rect("#1b1b1b42", x, y);
-      });
-    });
+  #drawSingleCell(cell, x, y) {
+    const cellState = cell.state;
+    let cellOpacity = Math.floor(cellState * 255).toString(16);
+
+    if (cellOpacity.length === 1) cellOpacity = `0${cellOpacity}`;
+
+    const computedColor = cellState > 0 ? `${this.#color}${cellOpacity}` : undefined;
+
+    if (computedColor != undefined) return this.#fillRect(computedColor, x, y);
+    if (this.#htmlDisplayGrid.checked) this.#rect("#1b1b1b42", x, y);
   }
 
   #fillRect(color, x, y) {

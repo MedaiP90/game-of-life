@@ -9,6 +9,16 @@ function stopProgress() {
   screenshotBtn.disabled = false;
 }
 
+function startProgress() {
+  gameProgress = setTimeout(
+    () => {
+      automaton.simulate();
+      startProgress();
+    },
+    Number(speed.value)
+  );
+}
+
 function generateStatuses() {
   statesList = [];
 
@@ -64,6 +74,7 @@ const statuses = document.getElementById("cell-statuses");
 const presets = document.getElementById("rules-preset");
 const errorLog = document.getElementById("error-log");
 const cyclesStat = document.getElementById("cycles");
+const computeStat = document.getElementById("compute");
 const statusStat = document.getElementById("status");
 const fpsStat = document.getElementById("fps");
 const gridChk = document.getElementById("grid");
@@ -125,7 +136,10 @@ fetch("examples/index.json")
 
 // Create a new game
 const automaton = new Automaton(
-  updateStats = (cycle) => (cyclesStat.innerHTML = cycle)
+  updateStats = (cycle, computeMs) => {
+    cyclesStat.innerHTML = cycle;
+    computeStat.innerHTML = computeMs;
+  }
 );
 
 // Create game renderer
@@ -145,7 +159,7 @@ startBtn.addEventListener("click", () => {
 
     statusStat.innerHTML = "Stopped";
   } else {
-    gameProgress = setInterval(() => automaton.simulate(), Number(speed.value));
+    gameProgress = setTimeout(startProgress, 100);
 
     startBtn.innerHTML = "Pause";
     statusStat.innerHTML = "Running";
@@ -166,6 +180,7 @@ generateBtn.addEventListener("click", () => {
   errorLog.style.display = "none";
   errorLog.innerHTML = "";
   cyclesStat.innerHTML = "--";
+  computeStat.innerHTML = "--";
   statusStat.innerHTML = "--";
   fpsStat.innerHTML = "--";
 
@@ -204,45 +219,58 @@ screenshotBtn.addEventListener("click", () => {
   loader.style.display = "flex";
   screenshotBtn.disabled = true;
 
-  html2canvas(document.getElementById("body"))
-    .then((tmpCanvas) => {
-      /* Write some info to the canvas */
+  const tmpCanvas = document.createElement("canvas");
+  const ctx = tmpCanvas.getContext("2d");
+  const growthFactor = 0.5;
+  const marginV = 30;
+  const marginH = 15;
+  const spacing = 10;
+  const lineHeight = 16;
+  const strings = [
+    `Behavior: ${presets.options[presets.selectedIndex].text}`,
+    `Neighborhood: ${neighborsSel.options[neighborsSel.selectedIndex].text}`,
+    `Cell statuses: ${statuses.value}`,
+    `Size: ${size.value}x${size.value}`,
+    `Can cross borders: ${bordersChk.checked}`,
+    `Cycle: ${automaton.cycle}`,
+  ];
 
-      const ctx = tmpCanvas.getContext("2d");
-      const left = 15;
-      const spacing = 10;
-      const lineHeight = 16;
-      const strings = [
-        `Behavior: ${presets.options[presets.selectedIndex].text}`,
-        `Neighborhood: ${neighborsSel.options[neighborsSel.selectedIndex].text}`,
-        `Cell statuses: ${statuses.value}`,
-        `Size: ${size.value}x${size.value}`,
-        `Can cross borders: ${bordersChk.checked}`,
-        `Cycle: ${automaton.cycle}`,
-      ];
+  tmpCanvas.clientHeight = grid.clientHeight + 2 * marginV;
+  tmpCanvas.clientWidth = (1 + growthFactor) * grid.clientWidth + marginH;
+  tmpCanvas.height = grid.height + 2 * marginV;
+  tmpCanvas.width = (1 + growthFactor) * grid.width + marginH;
+  
+  // White background
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, tmpCanvas.width, tmpCanvas.height);
 
-      // Text setup
-      ctx.font = `${lineHeight}px sans-serif`;
-      ctx.fillStyle = "#1b1b1b";
+  // Automaton margin
+  ctx.beginPath();
+  ctx.lineWidth = "1";
+  ctx.strokeStyle = "#1b1b1b";
+  ctx.rect(growthFactor * grid.clientWidth - 1, marginV - 1, grid.width + 1, grid.height + 1);
+  ctx.stroke();
 
-      // Add text
-      strings.forEach((s, i) => ctx.fillText(s, left, 30 + i * (lineHeight + spacing)));
+  // Text setup
+  ctx.font = `${lineHeight}px sans-serif`;
+  ctx.fillStyle = "#1b1b1b";
 
-      /* Download as image */
+  // Add text
+  strings.forEach((s, i) => ctx.fillText(s, marginH, marginV + i * (lineHeight + spacing)));
 
-      const tmpLink = document.createElement("a");
+  // Add old canvas
+  ctx.drawImage(grid, growthFactor * grid.clientWidth, marginV);
 
-      tmpLink.download = `cellular-automaton_${size.value}x${size.value}-${automaton.cycle}.png`;
-      tmpLink.href = tmpCanvas.toDataURL();
+  /* Download as image */
 
-      tmpLink.click();
-      screenshotBtn.disabled = false;
-      loader.style.display = "none";
-    })
-    .catch(() => {
-      screenshotBtn.disabled = false;
-      loader.style.display = "none"
-    });
+  const tmpLink = document.createElement("a");
+
+  tmpLink.download = `cellular-automaton_${size.value}x${size.value}-${automaton.cycle}.png`;
+  tmpLink.href = tmpCanvas.toDataURL();
+
+  tmpLink.click();
+  screenshotBtn.disabled = false;
+  loader.style.display = "none";
 });
 
 colorInput.addEventListener("change", () => {
