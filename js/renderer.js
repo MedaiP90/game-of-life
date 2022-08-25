@@ -10,7 +10,7 @@ class Renderer {
   #pixelSize = 0;
   #redrawCallback = () => {};
   #renderCallback = () => {};
-  #minFramerate = 10;
+  #minFramerate = 5;
 
   constructor(automaton, htmlAutomaton, htmlDisplayGrid, redrawCallback = () => {}, renderCallback = () => {}) {
     this.#automaton = automaton;
