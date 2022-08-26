@@ -69,6 +69,28 @@ The Rule 110 automaton has the following set of rules:
 
 The name "Rule 110" derives from the fact that this rule can be summarized in the binary sequence 01101110; interpreted as a binary number, this corresponds to the decimal value 110.
 
+## 5 - Wireworld
+
+Wireworld is a cellular automaton first proposed by Brian Silverman in 1987, as part of his program Phantom Fish Tank. It subsequently became more widely known as a result of an article in the "Computer Recreations" column of Scientific American. Wireworld is particularly suited to simulating transistors, and Wireworld is Turing-complete.
+
+### 5.1 - Rules
+
+A Wireworld cell can be in one of four different states, usually numbered 0–3 in software, modeled by colors in the examples here:
+
+- empty,
+- electron head,
+- electron tail,
+- conductor.
+
+As in all cellular automata, time proceeds in discrete steps called generations (sometimes "gens" or "ticks"). Cells behave as follows:
+
+- empty → empty,
+- electron head → electron tail,
+- electron tail → conductor,
+- conductor → electron head if exactly one or two of the neighbouring cells are electron heads, otherwise remains conductor.
+
+Wireworld uses what is called the Moore neighborhood, which means that in the rules above, neighbouring means one cell away (range value of one) in any direction, both orthogonal and diagonal.
+
 ## Moore neighborhood (`m`)
 
 In cellular automata, the Moore neighborhood is defined on a two-dimensional square lattice and is composed of a central cell and the eight cells that surround it.
@@ -96,3 +118,5 @@ The concept can be extended to higher dimensions, for example forming a 6-cell o
 - Rule 30: [Rule 30 - Wikipedia](https://en.wikipedia.org/wiki/Rule_30)
 
 - Rule 110: [Rule 110 - Wikipedia](https://en.wikipedia.org/wiki/Rule_110)
+
+- Wireworld: [Wireworld - Wikipedia](https://en.wikipedia.org/wiki/Wireworld)
