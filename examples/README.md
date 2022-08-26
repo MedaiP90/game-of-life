@@ -78,16 +78,22 @@ Wireworld is a cellular automaton first proposed by Brian Silverman in 1987, as 
 A Wireworld cell can be in one of four different states, usually numbered 0–3 in software, modeled by colors in the examples here:
 
 - empty,
+
 - electron head,
+
 - electron tail,
+
 - conductor.
 
 As in all cellular automata, time proceeds in discrete steps called generations (sometimes "gens" or "ticks"). Cells behave as follows:
 
-- empty → empty,
-- electron head → electron tail,
-- electron tail → conductor,
-- conductor → electron head if exactly one or two of the neighbouring cells are electron heads, otherwise remains conductor.
+1) empty → empty,
+
+2) electron head → electron tail,
+
+3) electron tail → conductor,
+
+4) conductor → electron head if exactly one or two of the neighbouring cells are electron heads, otherwise remains conductor.
 
 Wireworld uses what is called the Moore neighborhood, which means that in the rules above, neighbouring means one cell away (range value of one) in any direction, both orthogonal and diagonal.
 
