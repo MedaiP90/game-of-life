@@ -50,6 +50,8 @@ class Automaton {
   }
 
   initializeGrid(totalCells, randomFunction, stateFunction = () => 1) {
+    const moore = this.#neighborsType == "m";
+
     this.#grid.forEach((row, y) => {
       row.forEach((cell, x) => {
         const yB = y - 1 < 0
@@ -65,21 +67,16 @@ class Automaton {
           ? this.#crossBorders ? 0 : undefined
           : x + 1;
 
-        const moore = this.#neighborsType == "m"
-          ? [
-              yB != undefined && xB != undefined ? this.#grid[yB][xB] : undefined,
-              yB != undefined && xA != undefined ? this.#grid[yB][xA] : undefined,
-              yA != undefined && xB != undefined ? this.#grid[yA][xB] : undefined,
-              yA != undefined && xA != undefined ? this.#grid[yA][xA] : undefined,
-            ]
-          : [];
         const neighbors = [
+          moore && yB != undefined && xB != undefined ? this.#grid[yB][xB] : undefined,
           yB != undefined ? this.#grid[yB][x] : undefined,
+          moore && yB != undefined && xA != undefined ? this.#grid[yB][xA] : undefined,
           xB != undefined ? this.#grid[y][xB] : undefined,
           xA != undefined ? this.#grid[y][xA] : undefined,
+          moore && yA != undefined && xB != undefined ? this.#grid[yA][xB] : undefined,
           yA != undefined ? this.#grid[yA][x] : undefined,
-          ...moore
-        ].filter((n) => n != undefined);
+          moore && yA != undefined && xA != undefined ? this.#grid[yA][xA] : undefined,
+        ];
 
         cell.neighborhood = neighbors;
       });
