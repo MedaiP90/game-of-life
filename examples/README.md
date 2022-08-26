@@ -48,9 +48,26 @@ Rule 30 is so named because 30 is the smallest Wolfram code which describes its 
 
 In all of Wolfram's elementary cellular automata, an infinite one-dimensional array of cellular automaton cells with only two states is considered, with each cell in some initial state. At discrete time intervals, every cell spontaneously changes state based on its current state and the state of its two neighbors. For Rule 30, the rule set which governs the next state of the automaton is:
 
-| current pattern        	  | 111	| 110	| 101	| 100	| 011	| 010	| 001	| 000 |
+| Current pattern        	  | 111	| 110	| 101	| 100	| 011	| 010	| 001	| 000 |
 |:-------------------------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| new state for center cell	|  0	|  0 	|  0 	|  1 	|  1 	|  1	|  1	|  0  |
+| New state for center cell	|  0	|  0 	|  0 	|  1 	|  1 	|  1	|  1	|  0  |
+
+## 4 - Rule 110
+
+The Rule 110 cellular automaton (often called simply Rule 110) is an elementary cellular automaton with interesting behavior on the boundary between stability and chaos. In this respect, it is similar to Conway's Game of Life. Like Life, Rule 110 with a particular repeating background pattern is known to be Turing complete. This implies that, in principle, any calculation or computer program can be simulated using this automaton.
+
+### 4.1 - Rules
+
+In an elementary cellular automaton, a one-dimensional pattern of 0s and 1s evolves according to a simple set of rules. Whether a point in the pattern will be 0 or 1 in the new generation depends on its current value, as well as on those of its two neighbors.
+
+An animation of the way the rules of a 1D cellular automaton determine the next generation, using Rule 110.
+The Rule 110 automaton has the following set of rules:
+
+| Current pattern	          | 111 |	110 |	101 |	100 |	011 |	010 |	001 |	000 |
+|:-------------------------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| New state for center cell |	 0 	|  1  |	 1  |	 0  |	 1  |	 1	|  1	|  0  |
+
+The name "Rule 110" derives from the fact that this rule can be summarized in the binary sequence 01101110; interpreted as a binary number, this corresponds to the decimal value 110.
 
 ## Moore neighborhood (`m`)
 
@@ -77,3 +94,5 @@ The concept can be extended to higher dimensions, for example forming a 6-cell o
 - Conway's Game Of Life: [Conway's Game of Life - Wikipedia](https://en.wikipedia.org/wiki/Conway's_Game_of_Life)
 
 - Rule 30: [Rule 30 - Wikipedia](https://en.wikipedia.org/wiki/Rule_30)
+
+- Rule 110: [Rule 110 - Wikipedia](https://en.wikipedia.org/wiki/Rule_110)

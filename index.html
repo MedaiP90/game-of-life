@@ -71,8 +71,8 @@
             Write your set of rules in <em>JavaScript</em>, there are 3 variables available:
             <code>currentState</code> is the state of the cell (between 0 and 1),
             <code>memory</code> is a key-value dictionary to store info about the cell and
-            <code>neighbors</code> is the array of the cell's neighborhood (starting from the up-left corner clockwise,
-            <strong>NB: some values can be <em>undefined</em></strong>).
+            <code>neighbors</code> is the array of the cell's neighborhood (from left to right and top to bottom corners included,
+            <strong>NB: some values can be <em>undefined</em> based on selected neighborhood type</strong>).
             Every neighbor in the array exposes the variable <code>state</code> (as the <code>currentState</code> above)
             and the method <code>getFromMemory(key)</code>, that gives a value from its memory.
             The instructions <strong>must</strong> return the new state (between 0 and 1).
@@ -132,7 +132,7 @@
       </div>
 
       <div class="small-text">
-        <a href="https://github.com/MedaiP90/game-of-life/tree/v1.7.3" target="_blank">v1.7.3</a>
+        <a href="https://github.com/MedaiP90/game-of-life/tree/v1.7.4" target="_blank">v1.7.4</a>
       </div>
   
       <div></div>
