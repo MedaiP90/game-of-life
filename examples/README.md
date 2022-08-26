@@ -36,6 +36,22 @@ These rules, which compare the behavior of the automaton to real life, can be co
 
 The initial pattern constitutes the seed of the system. The first generation is created by applying the above rules simultaneously to every cell in the seed, live or dead; births and deaths occur simultaneously, and the discrete moment at which this happens is sometimes called a tick. Each generation is a pure function of the preceding one. The rules continue to be applied repeatedly to create further generations.
 
+## 3 - Rule 30
+
+Rule 30 is an elementary cellular automaton introduced by Stephen Wolfram in 1983. Using Wolfram's classification scheme, Rule 30 is a Class III rule, displaying aperiodic, chaotic behaviour.
+
+This rule is of particular interest because it produces complex, seemingly random patterns from simple, well-defined rules. Because of this, Wolfram believes that Rule 30, and cellular automata in general, are the key to understanding how simple rules produce complex structures and behaviour in nature. For instance, a pattern resembling Rule 30 appears on the shell of the widespread cone snail species Conus textile. Rule 30 has also been used as a random number generator in Mathematica, and has also been proposed as a possible stream cipher for use in cryptography.
+
+Rule 30 is so named because 30 is the smallest Wolfram code which describes its rule set (as described below). The mirror image, complement, and mirror complement of Rule 30 have Wolfram codes 86, 135, and 149, respectively.
+
+### 3.1 - Rules
+
+In all of Wolfram's elementary cellular automata, an infinite one-dimensional array of cellular automaton cells with only two states is considered, with each cell in some initial state. At discrete time intervals, every cell spontaneously changes state based on its current state and the state of its two neighbors. For Rule 30, the rule set which governs the next state of the automaton is:
+
+| current pattern        	  | 111	| 110	| 101	| 100	| 011	| 010	| 001	| 000 |
+|:-------------------------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| new state for center cell	|  0	|  0 	|  0 	|  1 	|  1 	|  1	|  1	|  0  |
+
 ## Moore neighborhood (`m`)
 
 In cellular automata, the Moore neighborhood is defined on a two-dimensional square lattice and is composed of a central cell and the eight cells that surround it.
@@ -59,3 +75,5 @@ The concept can be extended to higher dimensions, for example forming a 6-cell o
 - Brian's Brain: [Brian's Brain - Wikipedia](https://en.wikipedia.org/wiki/Brian's_Brain)
 
 - Conway's Game Of Life: [Conway's Game of Life - Wikipedia](https://en.wikipedia.org/wiki/Conway's_Game_of_Life)
+
+- Rule 30: [Rule 30 - Wikipedia](https://en.wikipedia.org/wiki/Rule_30)

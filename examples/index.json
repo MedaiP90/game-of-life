@@ -1,4 +1,5 @@
 [
   { "name": "Conway's Game Of Life", "file": "conways-game-of-life.js", "neighborhood": "m", "statuses": 2 },
-  { "name": "Brian's Brain", "file": "brians-brain.js", "neighborhood": "m", "statuses": 3 }
+  { "name": "Brian's Brain", "file": "brians-brain.js", "neighborhood": "m", "statuses": 3 },
+  { "name": "Rule 30", "file": "rule30.js", "neighborhood": "n", "statuses": 2 }
 ]
