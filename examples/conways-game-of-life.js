@@ -1,4 +1,6 @@
-let aliveNeighbors = neighbors.reduce((acc, curr) => acc + curr.state, 0);
+let aliveNeighbors = neighbors
+  .filter((n) => n != undefined)
+  .reduce((acc, curr) => acc + curr.state, 0);
 
 const remainsAlive =
   (currentState == 1 && aliveNeighbors >= 2 && aliveNeighbors <= 3) ||
