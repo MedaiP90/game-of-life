@@ -136,6 +136,12 @@ As in all cellular automata, time proceeds in discrete steps called generations 
 
 Wireworld uses what is called the Moore neighborhood, which means that in the rules above, neighbouring means one cell away (range value of one) in any direction, both orthogonal and diagonal.
 
+## 8 - Day and Night
+
+Day and Night is a cellular automaton rule in the same family as Game of Life. It is defined by rule notation B3678/S34678, meaning that a dead cell becomes live (is born) if it has 3, 6, 7, or 8 live neighbors, and a live cell remains alive (survives) if it has 3, 4, 6, 7, or 8 live neighbors, out of the eight neighbors in the Moore neighborhood. It was invented and named by Nathan Thompson in 1997, and investigated extensively by David I. Bell. The rule is given the name "Day & Night" because its on and off states are symmetric: if all the cells in the Universe are inverted, the future states are the inversions of the future states of the original pattern. A pattern in which the entire universe consists of off cells except for finitely many on cells can equivalently be represented by a pattern in which the whole universe is covered in on cells except for finitely many off cells in congruent locations.
+
+Although the detailed evolution of this cellular automaton is very different from Conway's Game of Life, it exhibits complex behavior similar to that rule: there are many known small oscillators and spaceships, and guns formed by combining oscillators in such a way that they periodically emit spaceships of various types.
+
 ## Moore neighborhood (`m`)
 
 In cellular automata, the Moore neighborhood is defined on a two-dimensional square lattice and is composed of a central cell and the eight cells that surround it.
@@ -169,3 +175,5 @@ The concept can be extended to higher dimensions, for example forming a 6-cell o
 - Rule 184: [Rule 184 - Wikipedia](https://en.wikipedia.org/wiki/Rule_184)
 
 - Wireworld: [Wireworld - Wikipedia](https://en.wikipedia.org/wiki/Wireworld)
+
+- Day and Night: [Day and Night - Wikipedia](https://en.wikipedia.org/wiki/Day_and_Night_(cellular_automaton))

@@ -1,4 +1,4 @@
-let aliveNeighbors = neighbors
+const aliveNeighbors = neighbors
   .filter((n) => n != undefined)
   .reduce((acc, curr) => acc + curr.state, 0);
 
