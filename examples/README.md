@@ -52,11 +52,31 @@ In all of Wolfram's elementary cellular automata, an infinite one-dimensional ar
 |:-------------------------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | New state for center cell	|  0	|  0 	|  0 	|  1 	|  1 	|  1	|  1	|  0  |
 
-## 4 - Rule 110
+## 4 - Rule 90
+
+In the mathematical study of cellular automata, Rule 90 is an elementary cellular automaton based on the exclusive or function. It consists of a one-dimensional array of cells, each of which can hold either a 0 or a 1 value. In each time step all values are simultaneously replaced by the exclusive or of their two neighboring values. Martin, Odlyzko & Wolfram (1984) call it "the simplest non-trivial cellular automaton", and it is described extensively in Stephen Wolfram's 2002 book A New Kind of Science.
+
+When started from a single live cell, Rule 90 has a time-space diagram in the form of a Sierpiński triangle. The behavior of any other configuration can be explained as a superposition of copies of this pattern, combined using the exclusive or function. Any configuration with only finitely many nonzero cells becomes a replicator that eventually fills the array with copies of itself. When Rule 90 is started from a random initial configuration, its configuration remains random at each time step. Its time-space diagram forms many triangular "windows" of different sizes, patterns that form when a consecutive row of cells becomes simultaneously zero and then cells with value 1 gradually move into this row from both ends.
+
+Some of the earliest studies of Rule 90 were made in connection with an unsolved problem in number theory, Gilbreath's conjecture, on the differences of consecutive prime numbers. This rule is also connected to number theory in a different way, via Gould's sequence. This sequence counts the number of nonzero cells in each time step after starting Rule 90 with a single live cell. Its values are powers of two, with exponents equal to the number of nonzero digits in the binary representation of the step number. Other applications of Rule 90 have included the design of tapestries.
+
+Every configuration of Rule 90 has exactly four predecessors, other configurations that form the given configuration after a single step. Therefore, in contrast to many other cellular automata such as Conway's Game of Life, Rule 90 has no Garden of Eden, a configuration with no predecessors. It provides an example of a cellular automaton that is surjective (each configuration has a predecessor) but not injective (it has sets of more than one configuration with the same successor). It follows from the Garden of Eden theorem that Rule 90 is locally injective (all configurations with the same successor vary at an infinite number of cells).
+
+### 4.1 - Rules
+
+Rule 90 is an elementary cellular automaton. That means that it consists of a one-dimensional array of cells, each of which holds a single binary value, either 0 or 1. An assignment of values to all of the cells is called a configuration. The automaton is given an initial configuration, and then progresses through other configurations in a sequence of discrete time steps. At each step, all cells are updated simultaneously. A pre-specified rule determines the new value of each cell as a function of its previous value and of the values in its two neighboring cells. All cells obey the same rule, which may be given either as a formula or as a rule table that specifies the new value for each possible combination of neighboring values.
+
+In the case of Rule 90, each cell's new value is the exclusive or of the two neighboring values. Equivalently, the next state of this particular automaton is governed by the following rule table:
+
+| Current pattern        	  | 111	| 110	| 101	| 100	| 011	| 010	| 001	| 000 |
+|:-------------------------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| New state for center cell	|  0	|  1 	|  0 	|  1 	|  1 	|  0	|  1	|  0  |
+
+## 5 - Rule 110
 
 The Rule 110 cellular automaton (often called simply Rule 110) is an elementary cellular automaton with interesting behavior on the boundary between stability and chaos. In this respect, it is similar to Conway's Game of Life. Like Life, Rule 110 with a particular repeating background pattern is known to be Turing complete. This implies that, in principle, any calculation or computer program can be simulated using this automaton.
 
-### 4.1 - Rules
+### 5.1 - Rules
 
 In an elementary cellular automaton, a one-dimensional pattern of 0s and 1s evolves according to a simple set of rules. Whether a point in the pattern will be 0 or 1 in the new generation depends on its current value, as well as on those of its two neighbors.
 
@@ -69,11 +89,11 @@ The Rule 110 automaton has the following set of rules:
 
 The name "Rule 110" derives from the fact that this rule can be summarized in the binary sequence 01101110; interpreted as a binary number, this corresponds to the decimal value 110.
 
-## 5 - Wireworld
+## 6 - Wireworld
 
 Wireworld is a cellular automaton first proposed by Brian Silverman in 1987, as part of his program Phantom Fish Tank. It subsequently became more widely known as a result of an article in the "Computer Recreations" column of Scientific American. Wireworld is particularly suited to simulating transistors, and Wireworld is Turing-complete.
 
-### 5.1 - Rules
+### 6.1 - Rules
 
 A Wireworld cell can be in one of four different states, usually numbered 0–3 in software, modeled by colors in the examples here:
 
@@ -122,6 +142,8 @@ The concept can be extended to higher dimensions, for example forming a 6-cell o
 - Conway's Game Of Life: [Conway's Game of Life - Wikipedia](https://en.wikipedia.org/wiki/Conway's_Game_of_Life)
 
 - Rule 30: [Rule 30 - Wikipedia](https://en.wikipedia.org/wiki/Rule_30)
+
+- Rule 90: [Rule 90 - Wikipedia](https://en.wikipedia.org/wiki/Rule_90)
 
 - Rule 110: [Rule 110 - Wikipedia](https://en.wikipedia.org/wiki/Rule_110)
 
