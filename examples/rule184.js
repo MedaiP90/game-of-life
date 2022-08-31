@@ -5,7 +5,7 @@ const trueNeighbors = [
 ];
 
 if (currentState == 1) {
-  return trueNeighbors[0] == 1 ? 0 : 1;
+  return trueNeighbors[1] == 1 ? 1 : 0;
 } else {
-  return trueNeighbors[0] == trueNeighbors[1] ? 0 : 1;
+  return trueNeighbors[0] == 1 ? 1 : 0;
 }

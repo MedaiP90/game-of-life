@@ -89,11 +89,30 @@ The Rule 110 automaton has the following set of rules:
 
 The name "Rule 110" derives from the fact that this rule can be summarized in the binary sequence 01101110; interpreted as a binary number, this corresponds to the decimal value 110.
 
-## 6 - Wireworld
+## 6 - Rule 184
+
+Rule 184 is a one-dimensional binary cellular automaton rule, notable for solving the majority problem as well as for its ability to simultaneously describe several, seemingly quite different, particle systems:
+
+Rule 184 can be used as a simple model for traffic flow in a single lane of a highway, and forms the basis for many cellular automaton models of traffic flow with greater sophistication. In this model, particles (representing vehicles) move in a single direction, stopping and starting depending on the cars in front of them. The number of particles remains unchanged throughout the simulation. Because of this application, Rule 184 is sometimes called the "traffic rule".
+Rule 184 also models a form of deposition of particles onto an irregular surface, in which each local minimum of the surface is filled with a particle in each step. At each step of the simulation, the number of particles increases. Once placed, a particle never moves.
+Rule 184 can be understood in terms of ballistic annihilation, a system of particles moving both leftwards and rightwards through a one-dimensional medium. When two such particles collide, they annihilate each other, so that at each step the number of particles remains unchanged or decreases.
+The apparent contradiction between these descriptions is resolved by different ways of associating features of the automaton's state with particles.
+
+The name of Rule 184 is a Wolfram code that defines the evolution of its states. The earliest research on Rule 184 is by Li (1987) and Krug & Spohn (1988). In particular, Krug and Spohn already describe all three types of particle system modeled by Rule 184.
+
+### 6.1 Rules
+
+A state of the Rule 184 automaton consists of a one-dimensional array of cells, each containing a binary value (0 or 1). In each step of its evolution, the Rule 184 automaton applies the following rule to each of the cells in the array, simultaneously for all cells, to determine the new state of the cell:
+
+| Current pattern	          | 111 |	110 |	101 |	100 |	011 |	010 |	001 |	000 |
+|:-------------------------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| New state for center cell |	 1 	|  0  |	 1  |	 1  |	 1  |	 0	|  0	|  0  |
+
+## 7 - Wireworld
 
 Wireworld is a cellular automaton first proposed by Brian Silverman in 1987, as part of his program Phantom Fish Tank. It subsequently became more widely known as a result of an article in the "Computer Recreations" column of Scientific American. Wireworld is particularly suited to simulating transistors, and Wireworld is Turing-complete.
 
-### 6.1 - Rules
+### 7.1 - Rules
 
 A Wireworld cell can be in one of four different states, usually numbered 0–3 in software, modeled by colors in the examples here:
 
@@ -146,5 +165,7 @@ The concept can be extended to higher dimensions, for example forming a 6-cell o
 - Rule 90: [Rule 90 - Wikipedia](https://en.wikipedia.org/wiki/Rule_90)
 
 - Rule 110: [Rule 110 - Wikipedia](https://en.wikipedia.org/wiki/Rule_110)
+
+- Rule 184: [Rule 184 - Wikipedia](https://en.wikipedia.org/wiki/Rule_184)
 
 - Wireworld: [Wireworld - Wikipedia](https://en.wikipedia.org/wiki/Wireworld)

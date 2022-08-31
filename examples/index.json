@@ -4,5 +4,6 @@
   { "name": "Rule 30", "file": "rule30.js", "neighborhood": "n", "statuses": 2 },
   { "name": "Rule 90", "file": "rule90.js", "neighborhood": "n", "statuses": 2 },
   { "name": "Rule 110", "file": "rule110.js", "neighborhood": "n", "statuses": 2 },
+  { "name": "Rule 184", "file": "rule184.js", "neighborhood": "n", "statuses": 2 },
   { "name": "Wireworld", "file": "wireworld.js", "neighborhood": "m", "statuses": 4 }
 ]
