@@ -142,6 +142,14 @@ Day and Night is a cellular automaton rule in the same family as Game of Life. I
 
 Although the detailed evolution of this cellular automaton is very different from Conway's Game of Life, it exhibits complex behavior similar to that rule: there are many known small oscillators and spaceships, and guns formed by combining oscillators in such a way that they periodically emit spaceships of various types.
 
+## 9 - Seeds
+
+Seeds is a cellular automaton in the same family as the Game of Life, initially investigated by Brian Silverman and named by Mirek Wójtowicz. It consists of an infinite two-dimensional grid of cells, each of which may be in one of two states: on or off. Each cell is considered to have eight neighbors (Moore neighborhood), as in Life. In each time step, a cell turns on or is "born" if it was off or "dead" but had exactly two neighbors that were on; all other cells turn off. Thus, in the notation describing the family of cellular automata containing Life, it is described by the rule B2/S.
+
+In Game of Life terminology, a pattern in which all cells that were on turn off at each step is called a phoenix. All patterns in Seeds have this form. Even though all live cells are constantly dying, the small birth requirement of two cells means that nearly every pattern in Seeds explodes into a chaotic mess that grows to cover the entire universe. Thus, in Wolfram's classification of cellular automata, it is a Class III automaton, in which nearly all patterns evolve chaotically.
+
+However, some patterns are known to behave in a more controlled fashion, repeating the same shape either in the same position of the grid (an oscillator) or translated some number of grid units after several steps (a spaceship). More complex rake and puffer patterns are known which move like spaceships leaving trails of oscillators or other spaceships behind them. Most of these patterns move at a speed of 1 cell per time step (the so-called speed of light, or c/1) including three commonly seen spaceships with four on cells each, but slower-moving patterns are also known. A collection of patterns for the Seeds rule collected by Jason Summers includes patterns found by Stephen Wright, Mirek Wójtowicz, Noam Elkies, Mark Niemiec, Peter Naszvadi, and David Eppstein.
+
 ## Moore neighborhood (`m`)
 
 In cellular automata, the Moore neighborhood is defined on a two-dimensional square lattice and is composed of a central cell and the eight cells that surround it.
@@ -177,3 +185,5 @@ The concept can be extended to higher dimensions, for example forming a 6-cell o
 - Wireworld: [Wireworld - Wikipedia](https://en.wikipedia.org/wiki/Wireworld)
 
 - Day and Night: [Day and Night - Wikipedia](https://en.wikipedia.org/wiki/Day_and_Night_(cellular_automaton))
+
+- Seeds: [Seeds - Wikipedia](https://en.wikipedia.org/wiki/Seeds_(cellular_automaton))
