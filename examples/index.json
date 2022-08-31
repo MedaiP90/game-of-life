@@ -8,5 +8,6 @@
   { "name": "Wireworld", "file": "wireworld.js", "neighborhood": "m", "statuses": 4 },
   { "name": "Day and Night", "file": "day-night.js", "neighborhood": "m", "statuses": 2 },
   { "name": "Seeds", "file": "seeds.js", "neighborhood": "m", "statuses": 2 },
-  { "name": "Turmite", "file": "turmite.js", "neighborhood": "n", "statuses": 2 }
+  { "name": "Turmite", "file": "turmite.js", "neighborhood": "n", "statuses": 2 },
+  { "name": "Langton's ant", "file": "langtons-ant.js", "neighborhood": "n", "statuses": 3 }
 ]
