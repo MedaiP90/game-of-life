@@ -14,7 +14,7 @@ const trueNeighbors = [
 if (memory.transition == undefined) {
   memory.transition = {
     direction: currentState != 1 ? -1 : Math.floor(Math.random() * 4),
-    state: Math.floor(Math.random() * 2),
+    state: currentState != 1 ? currentState : Math.floor(Math.random() * 2),
     turnAnt: false,
   };
 
