@@ -4,7 +4,9 @@ function stopProgress() {
   gameProgress = false;
   startBtn.innerHTML = "Start";
   generateBtn.disabled = false;
+  importBtn.disabled = false;
   screenshotBtn.disabled = false;
+  exportBtn.disabled = false;
 }
 
 function startProgress() {
@@ -62,6 +64,61 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function drawGrid(prebuiltGrid = undefined) {
+  loader.style.display = "flex";
+
+  startBtn.disabled = true;
+  generateBtn.disabled = true;
+  importBtn.disabled = true;
+  screenshotBtn.disabled = true;
+  exportBtn.disabled = true;
+
+  errorLog.style.display = "none";
+  errorLog.innerHTML = "";
+  cyclesStat.innerHTML = "--";
+  computeStat.innerHTML = "--";
+  statusStat.innerHTML = "--";
+  fpsStat.innerHTML = "--";
+
+  if (prebuiltGrid === undefined) gridFile.innerHTML = "--";
+
+  setTimeout(() => {
+    automaton.generateGrid(
+      crossBorders = bordersChk.checked,
+      cellsPerRow = Number(size.value),
+      neighborsType = neighborsSel.value,
+      cellBehavior = rules.value,
+      onCellError = (error) => {
+        errorLog.innerHTML = error.message;
+        errorLog.style.display = "inline";
+        statusStat.innerHTML = "Error";
+
+        console.error(error);
+  
+        stopProgress();
+        renderer.toggleCellDraw(false);
+      }
+    );
+  
+    // Generate initial active cells
+    automaton.initializeGrid(
+      totalCells = getRandomInt(1, automaton.size * automaton.size),
+      randomFunction = () => getRandomInt(0, automaton.size - 1),
+      stateFunction = () => statesList[getRandomInt(1, statesList.length - 1)],
+      prebuiltGrid
+    );
+  
+    // Trigger grid update
+    renderer.redrawGrid();
+  
+    startBtn.disabled = false;
+    generateBtn.disabled = false;
+    importBtn.disabled = false;
+    screenshotBtn.disabled = false;
+    exportBtn.disabled = false;
+  }, 100);
+}
+
 /* Select visual elements */
 
 const grid = document.getElementById("automaton");
@@ -80,12 +137,16 @@ const bordersChk = document.getElementById("borders");
 const neighborsSel = document.getElementById("neighbors-type");
 const colorInput = document.getElementById("color");
 const generateBtn = document.getElementById("generator");
+const importBtn = document.getElementById("importer");
 const startBtn = document.getElementById("starter");
 const screenshotBtn = document.getElementById("screenshot");
+const exportBtn = document.getElementById("export");
 const loader = document.getElementById("loader");
+const gridFile = document.getElementById("grid-name");
 
 /* Define variables */
 
+let prebuiltGridContent = undefined;
 let gameProgress = false;
 let gameRenderer = undefined;
 let statesList = [];
@@ -164,58 +225,78 @@ startBtn.addEventListener("click", () => {
     startBtn.innerHTML = "Pause";
     statusStat.innerHTML = "Running";
     generateBtn.disabled = true;
+    importBtn.disabled = true;
     screenshotBtn.disabled = true;
+    exportBtn.disabled = true;
   }
 
   renderer.toggleCellDraw();
 });
 
-generateBtn.addEventListener("click", () => {
-  loader.style.display = "flex";
+generateBtn.addEventListener("click", () => drawGrid(undefined));
 
-  startBtn.disabled = true;
-  generateBtn.disabled = true;
-  screenshotBtn.disabled = true;
+importBtn.addEventListener("click", () => {
+  const tmpInput = document.createElement("input");
 
-  errorLog.style.display = "none";
-  errorLog.innerHTML = "";
-  cyclesStat.innerHTML = "--";
-  computeStat.innerHTML = "--";
-  statusStat.innerHTML = "--";
-  fpsStat.innerHTML = "--";
+  tmpInput.type = "file";
+  tmpInput.accept = ".json";
+  tmpInput.onchange = (event) => {
+    const file = event.target.files[0];
 
-  setTimeout(() => {
-    automaton.generateGrid(
-      crossBorders = bordersChk.checked,
-      cellsPerRow = Number(size.value),
-      neighborsType = neighborsSel.value,
-      cellBehavior = rules.value,
-      onCellError = (error) => {
-        errorLog.innerHTML = error.message;
+    gridFile.innerHTML = file.name;
+
+    /* Read the content */
+
+    const reader = new FileReader();
+    reader.readAsText(file,"UTF-8");
+
+    reader.onload = (readerEvent) => {
+      try {
+        prebuiltGridContent = JSON.parse(readerEvent.target.result);
+        size.value = prebuiltGridContent.length;
+
+        drawGrid(prebuiltGridContent);
+      } catch (parseError) {
+        errorLog.innerHTML = parseError;
         errorLog.style.display = "inline";
-        statusStat.innerHTML = "Error";
-
-        console.error(error);
-  
-        stopProgress();
-        renderer.toggleCellDraw(false);
       }
-    );
-  
-    // Generate initial active cells
-    automaton.initializeGrid(
-      totalCells = getRandomInt(1, automaton.size * automaton.size),
-      randomFunction = () => getRandomInt(0, automaton.size - 1),
-      stateFunction = () => statesList[getRandomInt(1, statesList.length - 1)]
-    );
-  
-    // Trigger grid update
-    renderer.redrawGrid();
-  
-    startBtn.disabled = false;
-    generateBtn.disabled = false;
-    screenshotBtn.disabled = false;
-  }, 100);
+    }
+  };
+
+  tmpInput.click();
+});
+
+gridFile.addEventListener("click", () => {
+  if (gridFile.innerHTML !== "--") {
+    try {
+      size.value = prebuiltGridContent.length;
+
+      drawGrid(prebuiltGridContent);
+    } catch (parseError) {
+      errorLog.innerHTML = parseError;
+      errorLog.style.display = "inline";
+    }
+  }
+});
+
+exportBtn.addEventListener("click", () => {
+  loader.style.display = "flex";
+  exportBtn.disabled = true;
+
+  const jsonString = automaton.grid.map((row) => {
+    return row.map((cell) => cell.state);
+  });
+
+  /* Download as JSON */
+
+  const tmpLink = document.createElement("a");
+
+  tmpLink.download = `automaton-grid_${size.value}x${size.value}.json`;
+  tmpLink.href = `data:text/plain;charset=utf-8,${encodeURIComponent(JSON.stringify(jsonString))}`;
+
+  tmpLink.click();
+  exportBtn.disabled = false;
+  loader.style.display = "none";
 });
 
 screenshotBtn.addEventListener("click", () => {

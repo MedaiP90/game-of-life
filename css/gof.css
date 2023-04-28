@@ -153,3 +153,7 @@ textarea {
   padding: 1em;
   border-radius: 4px;
 }
+
+#grid-name {
+  cursor: pointer;
+}

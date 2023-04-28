@@ -5,6 +5,7 @@
   { "name": "Rule 90", "file": "rule90.js", "neighborhood": "n", "statuses": 2 },
   { "name": "Rule 110", "file": "rule110.js", "neighborhood": "n", "statuses": 2 },
   { "name": "Rule 184", "file": "rule184.js", "neighborhood": "n", "statuses": 2 },
+  { "name": "Random Wireworld", "file": "rnd-wireworld.js", "neighborhood": "m", "statuses": 4 },
   { "name": "Wireworld", "file": "wireworld.js", "neighborhood": "m", "statuses": 4 },
   { "name": "Day and Night", "file": "day-night.js", "neighborhood": "m", "statuses": 2 },
   { "name": "Seeds", "file": "seeds.js", "neighborhood": "m", "statuses": 2 },

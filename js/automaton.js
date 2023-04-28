@@ -49,7 +49,7 @@ class Automaton {
     }
   }
 
-  initializeGrid(totalCells, randomFunction, stateFunction = () => 1) {
+  initializeGrid(totalCells, randomFunction, stateFunction = () => 1, prebuilt = undefined) {
     const moore = this.#neighborsType == "m";
 
     this.#grid.forEach((row, y) => {
@@ -82,11 +82,19 @@ class Automaton {
       });
     });
 
-    for (let i = 0; i < totalCells; i++) {
-      const rndX = randomFunction();
-      const rndY = randomFunction();
+    if (prebuilt === undefined) {
+      for (let i = 0; i < totalCells; i++) {
+        const rndX = randomFunction();
+        const rndY = randomFunction();
 
-      this.#grid[rndY][rndX].state = stateFunction();
+        this.#grid[rndY][rndX].state = stateFunction();
+      }
+    } else {
+      prebuilt.forEach((row, y) => {
+        row.forEach((state, x) => {
+          this.#grid[y][x].state = state;
+        });
+      });
     }
   }
 
