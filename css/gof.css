@@ -46,6 +46,15 @@ textarea {
   gap: 0.2em;
 }
 
+.inner-even {
+  display: flex;
+  gap: 0.2em;
+}
+
+.inner-even > * {
+  flex-grow: 1;
+}
+
 .status-button {
   font-size: 0.8em;
 }
@@ -74,6 +83,10 @@ textarea {
 
 .text-end {
   text-align: end;
+}
+
+.hide {
+  visibility: hidden;
 }
 
 #loader {
@@ -140,7 +153,8 @@ textarea {
   display: none;
 }
 
-#statuses-preview {
+#statuses-preview,
+#statuses-draw {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

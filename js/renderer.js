@@ -1,4 +1,6 @@
 class Renderer {
+  canDraw = false;
+
   #automaton = undefined;
   #htmlAutomaton = undefined;
   #htmlDisplayGrid = { checked: true };
@@ -11,6 +13,7 @@ class Renderer {
   #redrawCallback = () => {};
   #renderCallback = () => {};
   #minFramerate = 5;
+  #drawEventCallback = () => {};
 
   constructor(automaton, htmlAutomaton, htmlDisplayGrid, redrawCallback = () => {}, renderCallback = () => {}) {
     this.#automaton = automaton;
@@ -19,10 +22,16 @@ class Renderer {
     this.#automatonContext = htmlAutomaton.getContext("2d");
     this.#redrawCallback = redrawCallback;
     this.#renderCallback = renderCallback;
+
+    this.#initDrawFunc();
   }
 
   get color() {
     return this.#color;
+  }
+
+  set drawEventCallback(callback) {
+    this.#drawEventCallback = callback ? callback : () => {};
   }
 
   start() {
@@ -78,6 +87,20 @@ class Renderer {
 
   changeColor(baseColor) {
     this.#color = baseColor;
+  }
+
+  #initDrawFunc() {
+    this.#htmlAutomaton.addEventListener("click", (evt) => {
+      if (!this.canDraw) return;
+
+      const { offsetX, offsetY } = evt;
+
+      // Get cell coordinates from click coordinates
+      const indexX = Math.floor(offsetX / this.#pixelSize.width);
+      const indexY = Math.floor(offsetY / this.#pixelSize.height);
+
+      if (this.#drawEventCallback) this.#drawEventCallback({ x: indexX, y: indexY });
+    });
   }
 
   #buildGrid() {

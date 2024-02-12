@@ -83,13 +83,17 @@
             <div>[ top-left, top, top-right, left, right, bottom-left, bottom, bottom-right ]</div>
 
             <br><br>Cell statuses:
-            <div id="statuses-preview"></div>
+            <div id="statuses-preview" class="inner-even"></div>
           </span>
         </div>
 
         <div class="big-space"></div>
 
-        <button id="generator" title="Generate a new random configuration">Generate</button>
+        <div class="inner-even">
+          <button id="generator" title="Generate a new random configuration">Generate</button>
+          <button id="generator-empty" title="Generate a new empty configuration">Generate empty</button>
+        </div>
+
         <div class="label-input">
           <button id="importer" title="Import a prebuilt JSON grid">Import a grid</button>
           <span id="grid-name" title="Click to reload">--</span>
@@ -134,10 +138,28 @@
         <button id="export" title="Export the automaton as JSON">Export as JSON</button>
         <button id="starter" title="Start or pause the simulation" disabled>Start</button>
         <div class="small-space"></div>
+
+        <div id="drawing-section">
+          <h1>Drawing</h1>
+
+          <div class="label-input">
+            <span>Enable drawing:</span>
+            <input type="checkbox" id="enable-draw" value="4" disabled>
+          </div>
+
+          <div class="small-space"></div>
+
+          <div class="label-input">
+            <span>Drawable cell status:</span>
+            <span id="selected-draw"></span>
+          </div>
+
+          <div id="statuses-draw" class="inner-even"></div>
+        </div>
       </div>
 
       <div class="small-text">
-        <a href="https://github.com/MedaiP90/game-of-life/tree/v1.8.0" target="_blank">v1.8.0</a>
+        <a href="https://github.com/MedaiP90/game-of-life/tree/v1.9.0" target="_blank">v1.9.0</a>
       </div>
   
       <div></div>

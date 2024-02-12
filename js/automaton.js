@@ -28,6 +28,17 @@ class Automaton {
     this.#grid = [];
   }
 
+  generateEmptyGrid(
+    crossBorders,
+    cellsPerRow = 0,
+    neighborsType = "m",
+    cellBehavior = "",
+    onCellError = (e) => console.error(e)
+  ) {
+    this.generateGrid(crossBorders, cellsPerRow, neighborsType, cellBehavior, onCellError);
+    this.initializeGrid(0, () => 0);
+  }
+
   generateGrid(
     crossBorders,
     cellsPerRow = 0,
@@ -47,6 +58,10 @@ class Automaton {
         this.#grid[y][x] = new Cell(cellBehavior, onCellError);
       }
     }
+  }
+
+  setCellState(x, y, state) {
+    this.#grid[y][x].state = state;
   }
 
   initializeGrid(totalCells, randomFunction, stateFunction = () => 1, prebuilt = undefined) {
